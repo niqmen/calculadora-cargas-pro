@@ -1,0 +1,86 @@
+[
+  {
+    "zona": "Sala-reunion",
+    "artefacto": "aire acondicionado portátil inverter 14000btu 220v 1370w lg",
+    "potencia_kw": 1.37,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Lg",
+    "precio_pen": 4477.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "aire_acond_14000btu_220v1370w.webp",
+    "categoria": "clima_comun"
+  },
+  {
+    "zona": "Sala-reunion",
+    "artefacto": "aire acond split inverter 18000 btuh 1ph 60hz 220v 11a york",
+    "potencia_kw": 2.42,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "York",
+    "precio_pen": 3097.5,
+    "horas_dia": 8.0,
+    "nombre_archivo": "aire_acond_split_inv_18000btu_220v2420w.webp",
+    "categoria": "clima_comun"
+  },
+  {
+    "zona": "Sala-reunion",
+    "artefacto": "aire acond split inverter 24000 btuh 1ph 60hz 220v 3300w york",
+    "potencia_kw": 3.3,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "York",
+    "precio_pen": 3823.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "aire_acond_split_inv_24000btu_220v3300w.webp",
+    "categoria": "clima_comun"
+  },
+  {
+    "zona": "Sala-reunion",
+    "artefacto": "aire acondicionado split pared 24000btuh frio calor 220v 2360w york",
+    "potencia_kw": 2.36,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "York",
+    "precio_pen": 6549.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "aire_acond_split_pared_24000btu_220v2360w.webp",
+    "categoria": "clima_comun"
+  },
+  {
+    "zona": "Sala-reunion",
+    "artefacto": "estufa halogena imaco 220v 1200w",
+    "potencia_kw": 1.2,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Imaco",
+    "precio_pen": 130.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "estufa_halogena_220v1200w.webp",
+    "categoria": "clima_comun"
+  },
+  {
+    "zona": "Sala-reunion",
+    "artefacto": "termoradiador aceite 220v 2500w",
+    "potencia_kw": 2.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Taurus",
+    "precio_pen": 799.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "termoradiador_aceite_220v2500w.webp",
+    "categoria": "clima_comun"
+  },
+  {
+    "zona": "Sala-reunion",
+    "artefacto": "calentador infrarojo pared control remoto 220v 2500w",
+    "potencia_kw": 2.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Arebos",
+    "precio_pen": 375.9,
+    "horas_dia": 8.0,
+    "nombre_archivo": "calentador_infrarojo_220v2500w.webp",
+    "categoria": "clima_comun"
+  }
+]

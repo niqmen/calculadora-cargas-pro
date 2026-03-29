@@ -1,0 +1,74 @@
+[
+  {
+    "zona": "sala_dental",
+    "artefacto": "sillon dental 220 1200W",
+    "potencia_kw": 1.2,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "A-dec",
+    "precio_pen": 12500.0,
+    "horas_dia": 5.0,
+    "nombre_archivo": "sillon_dental_220v1200w.webp",
+    "categoria": "consultorio_dental"
+  },
+  {
+    "zona": "maquinas",
+    "artefacto": "compresora dental 220v 1500w",
+    "potencia_kw": 1.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Welker",
+    "precio_pen": 669.0,
+    "horas_dia": 5.0,
+    "nombre_archivo": "compresora_dental_220v1500w.webp",
+    "categoria": "consultorio_dental"
+  },
+  {
+    "zona": "esterilizacion",
+    "artefacto": "autoclave tuttnauer 220v 2200w",
+    "potencia_kw": 2.2,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Tuttnauer",
+    "precio_pen": 15000.0,
+    "horas_dia": 5.0,
+    "nombre_archivo": "autoclave_220v2200w.webp",
+    "categoria": "consultorio_dental"
+  },
+  {
+    "zona": "diagnostico",
+    "artefacto": "rayosx pedestal 220v 850w",
+    "potencia_kw": 1.0,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hainuo",
+    "precio_pen": 7000.0,
+    "horas_dia": 5.0,
+    "nombre_archivo": "rayosx_pedestal_220v850w.webp",
+    "categoria": "consultorio_dental"
+  },
+  {
+    "zona": "sala_dental",
+    "artefacto": "micromotor electrico 220 75w",
+    "potencia_kw": 0.075,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Weh",
+    "precio_pen": 5190.0,
+    "horas_dia": 5.0,
+    "nombre_archivo": "micromotor_electrico_220v75w.webp",
+    "categoria": "consultorio_dental"
+  },
+  {
+    "zona": "sala_dental",
+    "artefacto": "lampara de fotocurado 220v 10w",
+    "potencia_kw": 0.01,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "B-cureplus",
+    "precio_pen": 745.0,
+    "horas_dia": 5.0,
+    "nombre_archivo": "lampara_fotocurado_220v10w.webp",
+    "categoria": "consultorio_dental"
+  }
+]

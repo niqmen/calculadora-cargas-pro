@@ -1,0 +1,122 @@
+[
+  {
+    "zona": "diseño",
+    "artefacto": "impresora color ricoh 220v 3840w",
+    "potencia_kw": 3.84,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Ricoh",
+    "precio_pen": 52340.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "impresora_color_220v3840w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "diseño",
+    "artefacto": "computadora altorendimiento 220v 850w",
+    "potencia_kw": 0.85,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Dell",
+    "precio_pen": 7499.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "computadora_alto_rend_220v850w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "diseño",
+    "artefacto": "monitor 27pulg 220v 50w",
+    "potencia_kw": 0.05,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Sansung",
+    "precio_pen": 699.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "monitor_27pulg_220v35w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "impresion",
+    "artefacto": "plotter hp desingnjet 220v 35w",
+    "potencia_kw": 0.035,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hp",
+    "precio_pen": 26990.0,
+    "horas_dia": 5.0,
+    "nombre_archivo": "plotter_desingnjet_220v4000w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "impresion",
+    "artefacto": "plotter allwin c512i 220v 4000w",
+    "potencia_kw": 4.0,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Allwin",
+    "precio_pen": 68000.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "plotter_allwin_220v4000w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "corte",
+    "artefacto": "guillotina rapida 220v 7500w",
+    "potencia_kw": 7.5,
+    "tension_v": 220.0,
+    "fase": 3.0,
+    "marca": "Shneider-senator",
+    "precio_pen": 59760.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "guillotina_rapida_220v7500w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "corte",
+    "artefacto": "cortadora laser planchas 220v 20300w",
+    "potencia_kw": 20.3,
+    "tension_v": 220.0,
+    "fase": 3.0,
+    "marca": "Forza",
+    "precio_pen": 142760.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "cortadora_laser_planchas_220v20300w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "impresion",
+    "artefacto": "maquina offset 220v 1500w",
+    "potencia_kw": 1.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Vektor",
+    "precio_pen": 59760.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "maquina_offset_220v1500w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "impresion",
+    "artefacto": "maquina multifuncional de sublimación 220 1500w",
+    "potencia_kw": 1.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Freesub",
+    "precio_pen": 1200.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "maquina_sublimacion_220v1500w.webp",
+    "categoria": "imprenta"
+  },
+  {
+    "zona": "impresion",
+    "artefacto": "impresora epson f170 de sublimación a4 220v 500w",
+    "potencia_kw": 0.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Epson",
+    "precio_pen": 1178.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "impresora_sublimacion_220v500w.webp",
+    "categoria": "imprenta"
+  }
+]

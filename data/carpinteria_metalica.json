@@ -1,0 +1,98 @@
+[
+  {
+    "zona": "produccion",
+    "artefacto": "maquina de soldar inversora 120a 220v 4000w",
+    "potencia_kw": 4.0,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Esab",
+    "precio_pen": 350.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "maquina_soldar_inv_220v4000w.webp",
+    "categoria": "carpinteria_metalica"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "soldadura Industrial electrodos revestidos 200a 220v 6600w",
+    "potencia_kw": 6.6,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Esab",
+    "precio_pen": 3949.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "soldadora_industrial_220v6600w.webp",
+    "categoria": "carpinteria_metalica"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "tronzadora cortadora metales Bosch 220v 2500w",
+    "potencia_kw": 2.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Bosch",
+    "precio_pen": 830.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "tronzadora_cortadora_220v2500w.webp",
+    "categoria": "carpinteria_metalica"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "taladro columna 220v 1hp",
+    "potencia_kw": 0.746,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Rexon",
+    "precio_pen": 1520.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "taladro_columna_220v1hp.webp",
+    "categoria": "carpinteria_metalica"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "esmeril recto cuello largo 220v 500w",
+    "potencia_kw": 0.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Bosch",
+    "precio_pen": 600.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "esmeril_recto_220v500w.webp",
+    "categoria": "carpinteria_metalica"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "amoladora angular bosch gws 220v 710w",
+    "potencia_kw": 0.71,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Bosch",
+    "precio_pen": 169.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "amoladora_angular_220v710w.webp",
+    "categoria": "carpinteria_metalica"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "Amoladora inalambrica accu gws18v 220 100w",
+    "potencia_kw": 0.1,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Bosch",
+    "precio_pen": 989.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "amoladora_inalambrica_220v100w.webp",
+    "categoria": "carpinteria_metalica"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "esmeril de banco 6 stanley 220v 373w",
+    "potencia_kw": 0.373,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Stanley",
+    "precio_pen": 323.9,
+    "horas_dia": 8.0,
+    "nombre_archivo": "esmeril_banco_220v373w.webp",
+    "categoria": "carpinteria_metalica"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "zona": "preparacion",
+    "artefacto": "hornos a carbon 24 pollos 220v 250w",
+    "potencia_kw": 0.25,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Peruvian",
+    "precio_pen": 6900.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "horno_acarbon_220v250w.webp",
+    "categoria": "polleria"
+  },
+  {
+    "zona": "preparacion",
+    "artefacto": "freidora electrica sobremesa 220v 4600w",
+    "potencia_kw": 4.6,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Ventus",
+    "precio_pen": 700.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "freidora_electrica_220v_4600w.webp",
+    "categoria": "polleria"
+  },
+  {
+    "zona": "preparacion",
+    "artefacto": "licuadora comercial ventus 220v 400w",
+    "potencia_kw": 0.4,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Ventus",
+    "precio_pen": 1619.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "licuadora_comercial_220v400w.webp",
+    "categoria": "polleria"
+  },
+  {
+    "zona": "preparacion",
+    "artefacto": "licuadora industrial ventus 2lt 220v 1680w",
+    "potencia_kw": 1.68,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Ventus",
+    "precio_pen": 700.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "licuadora_industrial_220v1680w.webp",
+    "categoria": "polleria"
+  },
+  {
+    "zona": "preparacion",
+    "artefacto": "cortadora de papas dakota 220v 750w",
+    "potencia_kw": 0.75,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Dakota",
+    "precio_pen": 2000.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "cortadora_papas_220v750w.webp",
+    "categoria": "polleria"
+  },
+  {
+    "zona": "preparacion",
+    "artefacto": "visicooler 220v 500w",
+    "potencia_kw": 0.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Ventus",
+    "precio_pen": 7500.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "visicooler_220v_500w.webp",
+    "categoria": "polleria"
+  }
+]

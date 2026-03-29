@@ -1,0 +1,122 @@
+[
+  {
+    "zona": "externo",
+    "artefacto": "hikvision camaradomo 2megapíxeles Infrarojo 20mts 12v 4w",
+    "potencia_kw": 0.009,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 79.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "camara_domo_12v4w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "externo",
+    "artefacto": "hikvision camara domo 350grados 2mpx audio luz infrarojo 25 mts 12v 9w",
+    "potencia_kw": 0.015,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 119.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "camara_domo_350gra_12v9w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "externo",
+    "artefacto": "hiikvision camaradomo ptz 2megapixeles zoom25x Infrarojo 100m 12v 20w",
+    "potencia_kw": 0.06,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 1179.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "camara_domo_350gra_12v20w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "externo",
+    "artefacto": "hikvision camara tubo 2megapixeles infrarojo 20m 12v 3w",
+    "potencia_kw": 0.009,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 89.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "camara_tubo_12v3w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "externo",
+    "artefacto": "hikvision camaratubo 2mpx infrarrojo 40m 12v 4w",
+    "potencia_kw": 0.012,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 160.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "camara_tubo_12v4w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "externo",
+    "artefacto": "hikvision tubo 2mpx smart infrarojo 40 audio 12v 5w",
+    "potencia_kw": 0.015,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 205.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "camara_tubo_12v5w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "interno",
+    "artefacto": "hikvision dvr4canales 2mpx 12v 16w",
+    "potencia_kw": 0.025,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 273.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "dvr_4canales_12v16w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "interno",
+    "artefacto": "hikvision 32canales 8canIP 5mpx rec facial vhd 12v 60w",
+    "potencia_kw": 0.08,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 1643.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "dvr_32canales_12v60w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "interno",
+    "artefacto": "switch 4puertos 12vdc 5w",
+    "potencia_kw": 0.012,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 129.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "switch_4puertos_12v5w.webp",
+    "categoria": "comunicaciones_comun"
+  },
+  {
+    "zona": "interno",
+    "artefacto": "switch 24puertos 2fibraoptica hikvision ds 12v 30w",
+    "potencia_kw": 0.05,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hikvision",
+    "precio_pen": 1299.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "switch_24puertos_12v5w.webp",
+    "categoria": "comunicaciones_comun"
+  }
+]

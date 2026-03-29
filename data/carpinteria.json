@@ -1,0 +1,86 @@
+[
+  {
+    "zona": "produccion",
+    "artefacto": "sierra de cinta n4400 230v 2.5kw",
+    "potencia_kw": 2.5,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Hammer",
+    "precio_pen": 6336.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "sirra_cinta_230v2500w.webp",
+    "categoria": "carpinteria"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "escuadradora k945S 230v 5500w",
+    "potencia_kw": 5.5,
+    "tension_v": 220.0,
+    "fase": 3.0,
+    "marca": "Felder",
+    "precio_pen": 9000.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "escuadradora_230v5500w.webp",
+    "categoria": "carpinteria"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "sierra escuadradora 220v 4hp",
+    "potencia_kw": 2.984,
+    "tension_v": 220.0,
+    "fase": 3.0,
+    "marca": "Amazon",
+    "precio_pen": 7774.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "sierra_escuadradora_220v4hp.webp",
+    "categoria": "carpinteria"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "sierra circular de mesa 3450rpm luzlaser 220v 1800w",
+    "potencia_kw": 1.8,
+    "tension_v": 220.0,
+    "fase": 1.0,
+    "marca": "Amazon",
+    "precio_pen": 3244.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "sierra_circular_mesa_220v1800w.webp",
+    "categoria": "carpinteria"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "ingleteadora 12pulg telescópica 220v 1675w",
+    "potencia_kw": 1.675,
+    "tension_v": 220.0,
+    "fase": 3.0,
+    "marca": "Dewalt",
+    "precio_pen": 3990.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "ingleteadora_telescopica_220v1675w.webp",
+    "categoria": "carpinteria"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "cepillo garlopa robland sd510 220 7kw",
+    "potencia_kw": 7.0,
+    "tension_v": 220.0,
+    "fase": 3.0,
+    "marca": "Robland",
+    "precio_pen": 3600.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "cepillo_garlopa_220v7000w.webp",
+    "categoria": "carpinteria"
+  },
+  {
+    "zona": "produccion",
+    "artefacto": "cepillo garlopa xcort xmd01 210 220v 1600w",
+    "potencia_kw": 1.6,
+    "tension_v": 220.0,
+    "fase": 3.0,
+    "marca": "Xcort",
+    "precio_pen": 1440.0,
+    "horas_dia": 8.0,
+    "nombre_archivo": "cepillo_garlopa_xcort_220v1600w.webp",
+    "categoria": "carpinteria"
+  }
+]

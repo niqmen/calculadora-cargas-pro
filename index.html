@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Cuadro de Cargas Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <img src="Logo_Asesor_Electricista.webp" alt="Logo" class="header-logo">
+        <div class="header-titles">
+          <h1 class="header-title">Cuadro de Cargas Pro</h1>
+          <span class="header-sub">Calculadora de Demanda Máxima</span>
+        </div>
+      </div>
+      <div class="header-selector">
+        <label for="rubroSelect" class="selector-label">⚡ Tipo de instalación</label>
+        <div class="select-wrapper">
+          <select id="rubroSelect">
+            <option value="">— Selecciona un rubro —</option>
+            <option value="residencial">🏠 Residencial</option>
+            <optgroup label="── Rubros Comerciales ──">
+              <option value="panaderia">🍞 Panadería</option>
+              <option value="carpinteria">🪵 Carpintería</option>
+              <option value="carpinteria_metalica">🔧 Carpintería Metálica</option>
+              <option value="consultorio_dental">🦷 Consultorio Dental</option>
+              <option value="imprenta">🖨️ Imprenta</option>
+              <option value="polleria">🍗 Pollería</option>
+              <option value="restaurante">🍽️ Restaurante</option>
+              <option value="carniceria">🥩 Carnicería</option>
+              <option value="minimarket">🛒 Minimarket</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-layout">
+
+    <!-- PANEL IZQUIERDO: artefactos -->
+    <section class="artefactos-panel" id="artefactosPanel">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">⚡</div>
+        <p>Selecciona un rubro para comenzar</p>
+      </div>
+      <div id="zonasContainer" class="zonas-container" style="display:none"></div>
+    </section>
+
+    <!-- PANEL DERECHO: resultados -->
+    <aside class="resultados-panel">
+      <div class="resultados-header">
+        <span class="resultados-icon">📊</span>
+        <h2>Resultados</h2>
+      </div>
+
+      <div class="resultado-grupo">
+        <div class="resultado-fila">
+          <span class="resultado-label">Iluminación (100%)</span>
+          <span class="resultado-valor" id="resIluminacion">0.00 kW</span>
+        </div>
+        <div class="resultado-fila">
+          <span class="resultado-label">Carga artefactos</span>
+          <span class="resultado-valor" id="resCargaArtefactos">0.00 kW</span>
+        </div>
+        <div class="resultado-fila">
+          <span class="resultado-label">N° equipos</span>
+          <span class="resultado-valor" id="resNumEquipos">0</span>
+        </div>
+        <div class="resultado-fila">
+          <span class="resultado-label">Factor de carga</span>
+          <span class="resultado-valor" id="resFactorCarga">0%</span>
+        </div>
+        <div class="resultado-fila">
+          <span class="resultado-label">Artefactos c/ factor</span>
+          <span class="resultado-valor" id="resArtefactosFactor">0.00 kW</span>
+        </div>
+        <div class="resultado-fila">
+          <span class="resultado-label">Potencia estimada</span>
+          <span class="resultado-valor" id="resPotenciaEstimada">0.00 kW</span>
+        </div>
+      </div>
+
+      <div class="resultado-grupo">
+        <div class="resultado-fila">
+          <span class="resultado-label">Mayor equipo</span>
+          <span class="resultado-valor" id="resMayorEquipo">0.00 kW</span>
+        </div>
+        <div class="resultado-fila">
+          <span class="resultado-label">90% de 2 mayores</span>
+          <span class="resultado-valor" id="resDosM">0.00 kW</span>
+        </div>
+        <div class="resultado-fila">
+          <span class="resultado-label">80% de 3 mayores</span>
+          <span class="resultado-valor" id="resTresM">0.00 kW</span>
+        </div>
+      </div>
+
+      <div class="resultado-final-box">
+        <div class="resultado-final-label">⚡ POTENCIA MÍNIMA A CONTRATAR</div>
+        <div class="resultado-final-valor" id="resPotenciaFinal">0.00 kW</div>
+      </div>
+
+      <div class="resultado-grupo">
+        <div class="resultado-fila">
+          <span class="resultado-label">Corriente (cosφ=0.9)</span>
+          <span class="resultado-valor" id="resAmperaje">0.00 A</span>
+        </div>
+        <div class="resultado-fila resultado-fila--tarifa">
+          <span class="resultado-label">Tarifa (S/./kWh)</span>
+          <input type="number" id="inputTarifa" class="tarifa-input" value="0.70" min="0.01" step="0.01">
+        </div>
+        <div class="resultado-fila">
+          <span class="resultado-label">Costo mensual est.</span>
+          <span class="resultado-valor resultado-valor--costo" id="resCostoMensual">S/. 0.00</span>
+        </div>
+      </div>
+
+      <div class="botones-export">
+        <button class="btn-reset" id="btnReset">🔄 Reiniciar</button>
+        <button class="btn-preview" id="btnPreview">👁️ Vista Previa</button>
+        <button class="btn-export-pdf" id="btnPDF">📄 Certificar PDF — S/. 50</button>
+        <button class="btn-export-xlsx" id="btnXLSX">📥 Descargar XLSX — S/. 3</button>
+      </div>
+
+      <div class="resultados-footer">
+        Desarrollado por <strong>Ing. Niquel Mendoza M.</strong>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- MODAL VISTA PREVIA WEB -->
+  <div class="modal-overlay modal-fullscreen" id="modalVistaPrevia">
+    <div class="modal modal-vp">
+      <div class="modal-header">
+        <span>👁️ Vista Previa — Cuadro de Cargas BORRADOR</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn-vp-descargar" id="btnVPDescargar">⬇️ Descargar PDF borrador</button>
+          <button class="modal-cerrar" id="modalVPCerrar">✕</button>
+        </div>
+      </div>
+      <div class="modal-vp-body" id="modalVPBody"></div>
+    </div>
+  </div>
+
+  <!-- MODAL CARGA MANUAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span>➕ Agregar carga personalizada</span>
+        <button class="modal-cerrar" id="modalCerrar">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Nombre -->
+        <div class="modal-campo">
+          <label for="inputNombre">Nombre del equipo</label>
+          <input type="text" id="inputNombre" placeholder="Ej: Compresor de aire 2HP">
+        </div>
+
+        <!-- Unidad de ingreso -->
+        <div class="modal-campo">
+          <label>Unidad de ingreso</label>
+          <div class="radio-group radio-group--horizontal">
+            <label class="radio-opcion">
+              <input type="radio" name="unidad" value="kw" checked>
+              <span>kW</span>
+            </label>
+            <label class="radio-opcion">
+              <input type="radio" name="unidad" value="hp">
+              <span>HP</span>
+            </label>
+            <label class="radio-opcion">
+              <input type="radio" name="unidad" value="a">
+              <span>Amperios (A)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Valor (kW / HP / A) -->
+        <div class="modal-campo">
+          <label id="labelValor">Potencia (kW)</label>
+          <input type="number" id="inputValor" placeholder="Ej: 1.5" min="0.001" step="0.001">
+          <div id="previewKW" class="preview-kw" style="display:none"></div>
+        </div>
+
+        <!-- Factor de potencia (solo visible en Amperios) -->
+        <div class="modal-campo" id="filaFactorPotencia" style="display:none">
+          <label for="inputFP">Factor de potencia (cosφ)</label>
+          <div class="fp-row">
+            <input type="number" id="inputFP" value="0.85" min="0.1" max="1" step="0.01">
+            <span class="fp-hint">0.85 motores · 1.0 resistivo</span>
+          </div>
+        </div>
+
+        <!-- Tipo de conexión -->
+        <div class="modal-campo">
+          <label>Tipo de conexión</label>
+          <div class="radio-group">
+            <label class="radio-opcion">
+              <input type="radio" name="conexion" value="220|1" checked>
+              <span>Monofásica 220V</span>
+            </label>
+            <label class="radio-opcion">
+              <input type="radio" name="conexion" value="220|3">
+              <span>Trifásica 220V</span>
+            </label>
+            <label class="radio-opcion">
+              <input type="radio" name="conexion" value="380|3">
+              <span>Trifásica 380V</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="modalError" class="modal-error" style="display:none"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancelar" id="btnModalCancelar">Cancelar</button>
+        <button class="btn-modal-agregar" id="btnModalAgregar">➕ Agregar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- jsPDF para generar PDF en el navegador -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <!-- SheetJS para exportar XLSX -->
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <!-- Módulos JS propios -->
+  <script src="js/calculos.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+  <script src="js/exportar.js?v=2"></script>
+  <script src="js/modal.js?v=2"></script>
+  <script src="js/drive.js?v=2"></script>
+  <script src="js/pagos.js?v=2"></script>
+
+</body>
+</html>
