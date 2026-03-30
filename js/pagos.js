@@ -242,7 +242,7 @@ async function procesarPago() {
   subirXLSADrive(numSolicitud); // async, no bloqueante
 
   // Enviar a Google Sheets
-  enviarSolicitudSheets({ ahora, contacto, medio, linkDrive: '— Ver en Drive', numSolicitud });
+  enviarSolicitudSheets({ ahora, contacto, medio, linkDrive: '', numSolicitud });
 
   // Mensaje WhatsApp al cliente
   const msgCliente = encodeURIComponent(
@@ -271,7 +271,7 @@ async function procesarPago() {
 function enviarSolicitudSheets({ ahora, contacto, medio, linkDrive, numSolicitud }) {
   const nombreModal = pagoActual.nombre    || '—';
   const dirModal    = pagoActual.direccion || '—';
-  const driveInfo = linkDrive !== '—' ? ` | Drive: ${linkDrive}` : '';
+  const driveInfo = linkDrive ? ` | Drive: ${linkDrive}` : '';
 
   const params = new URLSearchParams({
     [PAGOS_FIELDS.fecha_hora]:      ahora,
