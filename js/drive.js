@@ -44,7 +44,7 @@ async function generarJWT() {
   const ahora   = Math.floor(Date.now() / 1000);
   const payload = {
     iss:   DRIVE_CONFIG.clientEmail,
-    scope: 'https://www.googleapis.com/auth/drive.file',
+    scope: 'https://www.googleapis.com/auth/drive',
     aud:   'https://oauth2.googleapis.com/token',
     iat:   ahora,
     exp:   ahora + 3600,
