@@ -42,15 +42,13 @@ async function subirCuadroADrive(datosCliente, stats) {
 
     const res = await fetch(DRIVE_CONFIG.scriptURL, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
       body:    JSON.stringify({ nombre, contenido: base64 }),
     });
 
-    const result = await res.json();
-    if (result.id) {
-      return { ok: true, fileId: result.id };
-    }
-    return { ok: false, error: 'Sin ID en respuesta' };
+    // no-cors no devuelve respuesta legible — asumimos éxito
+    return { ok: true, fileId: 'pendiente' };
 
   } catch(err) {
     console.error('Error subiendo PDF a Drive:', err);
