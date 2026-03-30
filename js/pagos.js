@@ -532,7 +532,7 @@ ${recHTML}
 </table></body></html>`;
 }
 
-// ── Subir XLS a Google Drive ────────────────────────
+// ── Subir XLS a Google Drive via Apps Script ───────
 async function subirXLSADrive(clave, numSolicitud) {
   try {
     const nombre    = pagoActual.nombre    || '—';
@@ -547,51 +547,17 @@ async function subirXLSADrive(clave, numSolicitud) {
     const cond = obtenerConductor(stats.potenciaFinal);
 
     // Generar HTML del XLS
-    const html  = generarHTMLXLS(nombre, direccion, rubro, ahora, numSolicitud, stats, ft, cond);
-    const bytes = new TextEncoder().encode(html);
+    const html     = generarHTMLXLS(nombre, direccion, rubro, ahora, numSolicitud, stats, ft, cond);
+    const base64   = btoa(unescape(encodeURIComponent(html)));
+    const nombreArchivo = `XLS_${numSolicitud}_${rubro}.xls`;
 
-    // Subir a Google Drive
-    const token    = await obtenerToken();
-    const boundary = '-------XLS314159265';
-    const meta     = JSON.stringify({
-      name:    `XLS_${numSolicitud}_${rubro}.xls`,
-      parents: [DRIVE_CONFIG.folderId],
-      description: `Cliente:${nombre} | Rubro:${rubro} | Potencia:${stats.potenciaFinal.toFixed(3)}kW | Clave:${clave} | Solicitud:${numSolicitud}`,
-    });
+    // Subir via Apps Script
+    const resultado = await subirArchivoADrive(base64, nombreArchivo);
+    const linkDrive = resultado.ok
+      ? `https://drive.google.com/file/d/${resultado.fileId}/view`
+      : '—';
 
-    const delim = '\r\n--' + boundary + '\r\n';
-    const close = '\r\n--' + boundary + '--';
-    const bodyTxt = delim +
-      'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-      meta +
-      delim +
-      'Content-Type: application/vnd.ms-excel\r\n\r\n';
-
-    const enc      = new TextEncoder();
-    const part1    = enc.encode(bodyTxt);
-    const part2    = enc.encode(close);
-    const fullBody = new Uint8Array(part1.length + bytes.length + part2.length);
-    fullBody.set(part1, 0);
-    fullBody.set(bytes, part1.length);
-    fullBody.set(part2, part1.length + bytes.length);
-
-    const res = await fetch(
-      'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
-      {
-        method:  'POST',
-        headers: {
-          Authorization:  `Bearer ${token}`,
-          'Content-Type': `multipart/related; boundary=${boundary}`,
-        },
-        body: fullBody,
-      }
-    );
-
-    const result   = await res.json();
-    const fileId   = result.id;
-    const linkDrive = fileId ? `https://drive.google.com/file/d/${fileId}/view` : '—';
-
-    // Actualizar Sheets con link y clave
+    // Registrar en Sheets con link y clave
     const contacto = pagoActual.contacto || '—';
     const params   = new URLSearchParams({
       [PAGOS_FIELDS.fecha_hora]:      new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' }),
@@ -599,7 +565,7 @@ async function subirXLSADrive(clave, numSolicitud) {
       [PAGOS_FIELDS.direccion]:       direccion,
       [PAGOS_FIELDS.rubro]:           rubro,
       [PAGOS_FIELDS.potencia_kw]:     `${stats.potenciaFinal.toFixed(3)} kW`,
-      [PAGOS_FIELDS.tipo_servicio]:   `XLSX | N°: ${numSolicitud}`,
+      [PAGOS_FIELDS.tipo_servicio]:   `XLSX | N: ${numSolicitud}`,
       [PAGOS_FIELDS.medio_pago]:      pagoActual.medio || '—',
       [PAGOS_FIELDS.whatsapp_correo]: `${contacto} | Clave: ${clave} | Drive: ${linkDrive}`,
       [PAGOS_FIELDS.estado]:          'Por atender',
@@ -611,10 +577,10 @@ async function subirXLSADrive(clave, numSolicitud) {
       body: params.toString(),
     }).catch(() => {});
 
-    console.log(`XLS subido a Drive: ${linkDrive} | Clave: ${clave}`);
+    console.log(`XLS subido: ${linkDrive} | Clave: ${clave}`);
 
   } catch(err) {
-    console.error('Error subiendo XLS a Drive:', err);
+    console.error('Error subiendo XLS:', err);
   }
 }
 
