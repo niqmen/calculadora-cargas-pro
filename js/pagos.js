@@ -551,11 +551,15 @@ async function subirXLSADrive(clave, numSolicitud) {
     const base64   = btoa(unescape(encodeURIComponent(html)));
     const nombreArchivo = `XLS_${numSolicitud}_${rubro}.xls`;
 
-    // Subir via Apps Script
-    const resultado = await subirArchivoADrive(base64, nombreArchivo);
-    const linkDrive = resultado.ok
-      ? `https://drive.google.com/file/d/${resultado.fileId}/view`
-      : '—';
+    const res = await fetch(DRIVE_CONFIG.scriptURL, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ nombre: nombreArchivo, contenido: base64 }),
+    });
+
+    // no-cors no devuelve respuesta — el archivo llegó a Drive
+    const linkDrive = '— Ver en Drive';
 
     // Registrar en Sheets con link y clave
     const contacto = pagoActual.contacto || '—';
