@@ -239,9 +239,7 @@ async function procesarPago() {
   btnWA.textContent = '⏳ Procesando...';
 
   // Ambos servicios generan XLS y suben a Drive
-  const clave = generarClaveXLSX(numSolicitud);
-  pagoActual.claveXLSX = clave;
-  subirXLSADrive(clave, numSolicitud); // async, no bloqueante
+  subirXLSADrive(numSolicitud); // async, no bloqueante
 
   // Enviar a Google Sheets
   enviarSolicitudSheets({ ahora, contacto, medio, linkDrive: '— Ver en Drive', numSolicitud });
@@ -273,8 +271,7 @@ async function procesarPago() {
 function enviarSolicitudSheets({ ahora, contacto, medio, linkDrive, numSolicitud }) {
   const nombreModal = pagoActual.nombre    || '—';
   const dirModal    = pagoActual.direccion || '—';
-  const claveInfo   = pagoActual.claveXLSX ? ` | Clave XLSX: ${pagoActual.claveXLSX}` : '';
-  const driveInfo   = linkDrive !== '—'    ? ` | Drive: ${linkDrive}` : '';
+  const driveInfo = linkDrive !== '—' ? ` | Drive: ${linkDrive}` : '';
 
   const params = new URLSearchParams({
     [PAGOS_FIELDS.fecha_hora]:      ahora,
@@ -284,7 +281,7 @@ function enviarSolicitudSheets({ ahora, contacto, medio, linkDrive, numSolicitud
     [PAGOS_FIELDS.potencia_kw]:     `${pagoActual.potencia.toFixed(3)} kW`,
     [PAGOS_FIELDS.tipo_servicio]:   `${pagoActual.label} | N°: ${numSolicitud}`,
     [PAGOS_FIELDS.medio_pago]:      medio === 'yape' ? 'Yape' : 'Deposito BCP',
-    [PAGOS_FIELDS.whatsapp_correo]: contacto + claveInfo + driveInfo,
+    [PAGOS_FIELDS.whatsapp_correo]: contacto + driveInfo,
     [PAGOS_FIELDS.estado]:          'Por atender',
   });
 
@@ -301,7 +298,7 @@ function mostrarConfirmacion(nombre, contacto, tipo, numSolicitud) {
   const esCertificado = tipo === 'certificado';
   const msgWA         = encodeURIComponent(
     `Hola, soy ${nombre}.\n` +
-    `No recibí mi ${esCertificado ? 'documento certificado' : 'clave del archivo XLSX'}.\n` +
+    `No recibí mi ${esCertificado ? 'documento certificado' : 'archivo XLS'}.\n` +
     `N° solicitud: ${numSolicitud}\n` +
     `Contacto: ${contacto}`
   );
@@ -334,7 +331,7 @@ function mostrarConfirmacion(nombre, contacto, tipo, numSolicitud) {
         <p style="font-size:0.9rem;color:#1C1E22;margin:0 0 14px">
           ${esCertificado
             ? `Hola <strong>${nombre}</strong>, estamos procesando tu cuadro de cargas certificado.`
-            : `Hola <strong>${nombre}</strong>, estamos verificando tu pago. En breve te enviaremos el enlace de descarga y tu clave de acceso.`
+            : `Hola <strong>${nombre}</strong>, estamos verificando tu pago. En breve te enviaremos el enlace de descarga.`
           }
         </p>
 
@@ -354,7 +351,7 @@ function mostrarConfirmacion(nombre, contacto, tipo, numSolicitud) {
             ? `<strong>⏱️ Tiempo estimado:</strong> máximo <strong>1 hora</strong><br>
                Recibirás tu PDF firmado por WhatsApp o correo.`
             : `<strong>⏱️ Tiempo estimado: máximo <strong>5 minutos</strong></strong><br>
-               Recibirás el enlace y tu clave de acceso por WhatsApp o correo.`
+               Recibirás el enlace de descarga por WhatsApp o correo.`
           }
         </div>
 
@@ -366,7 +363,7 @@ function mostrarConfirmacion(nombre, contacto, tipo, numSolicitud) {
 
         <!-- Botón contacto si no recibe -->
         <div style="font-size:0.78rem;color:#5A6070;text-align:center;margin-bottom:12px">
-          ¿No recibiste tu ${esCertificado ? 'documento' : 'enlace y clave'} en el tiempo indicado?
+          ¿No recibiste tu ${esCertificado ? 'documento' : 'enlace de descarga'} en el tiempo indicado?
         </div>
         <a href="https://wa.me/${WA_NUMERO}?text=${msgWA}" target="_blank"
            style="display:block;text-align:center;padding:10px;
@@ -390,15 +387,7 @@ function mostrarConfirmacion(nombre, contacto, tipo, numSolicitud) {
   document.body.appendChild(div);
 }
 
-// ── Generar clave única XLSX ────────────────────────
-function generarClaveXLSX(numSolicitud) {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let sufijo  = '';
-  for (let i = 0; i < 4; i++) {
-    sufijo += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return `${numSolicitud}-${sufijo}`;
-}
+
 
 // ── Generar HTML del XLS ──────────────────────────
 function generarHTMLXLS(nombre, direccion, rubro, ahora, numSolicitud, stats, ft, cond) {
@@ -510,7 +499,7 @@ ${recHTML}
 }
 
 // ── Subir XLS a Google Drive via Apps Script ───────
-async function subirXLSADrive(clave, numSolicitud) {
+async function subirXLSADrive(numSolicitud) {
   try {
     const nombre    = pagoActual.nombre    || '—';
     const direccion = pagoActual.direccion || '—';
@@ -530,7 +519,7 @@ async function subirXLSADrive(clave, numSolicitud) {
 
     // Solo subir a Drive — el registro en Sheets lo hace procesarPago
     await enviarADrive(nombreArchivo, base64);
-    console.log(`XLS subido a Drive | Clave: ${clave}`);
+    console.log(`XLS subido a Drive | N: ${numSolicitud}`);
 
   } catch(err) {
     console.error('Error subiendo XLS:', err);
