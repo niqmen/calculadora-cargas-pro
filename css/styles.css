@@ -748,6 +748,9 @@ body {
   transition: transform 0.2s;
   overflow: hidden;
   margin: 16px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 32px);
 }
 .modal-overlay.visible .modal { transform: translateY(0); }
 
@@ -781,7 +784,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--amarillo) var(--gris-panel);
 }
+.modal-body::-webkit-scrollbar { width: 4px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--amarillo); border-radius: 2px; }
 .modal-campo {
   display: flex;
   flex-direction: column;
@@ -903,6 +912,8 @@ body {
   gap: 10px;
   justify-content: flex-end;
   border-top: 1px solid var(--gris-borde);
+  flex-shrink: 0;
+  background: var(--blanco);
 }
 .btn-modal-cancelar {
   padding: 8px 18px;
@@ -1091,16 +1102,18 @@ body {
 }
 
 @media (max-width: 600px) {
-  /* Modal de pago en móvil */
-  .modal-pago { max-width: 100%; }
-  .modal { padding: 0; }
-  .modal-body { padding: 12px; gap: 10px; }
-  .modal-footer { padding: 12px; }
+  /* Modal ocupa toda la pantalla en móvil */
+  .modal-overlay { align-items: flex-end; padding: 0; }
+  .modal {
+    margin: 0;
+    border-radius: var(--radio) var(--radio) 0 0;
+    max-height: 92vh;
+  }
 
-  /* QR más grande en móvil para escanear fácil */
-  .qr-yape { width: 160px; height: 160px; }
+  /* QR más grande para escanear fácil */
+  .qr-yape { width: 180px; height: 180px; }
 
-  /* Instrucciones Yape en columna en móvil */
+  /* Instrucciones Yape en columna centrada */
   .instr-body {
     flex-direction: column;
     align-items: center;
@@ -1109,18 +1122,23 @@ body {
   .instr-datos { align-items: center; }
   .instr-fila { justify-content: center; }
 
-  /* Botones de exportar más grandes en móvil */
-  .btn-reset,
-  .btn-preview,
-  .btn-export-pdf,
-  .btn-export-xlsx {
+  /* Botón enviar más grande y ancho completo */
+  .btn-modal-agregar {
+    flex: 1;
+    padding: 14px;
+    font-size: 1rem;
+  }
+  .btn-modal-cancelar { padding: 14px 16px; }
+
+  /* Botones de exportar más grandes */
+  .btn-reset, .btn-preview,
+  .btn-export-pdf, .btn-export-xlsx {
     padding: 12px 14px;
     font-size: 1rem;
   }
 
   /* Panel resultados compacto */
   .resultado-final-valor { font-size: 2rem; }
-  .resultado-final-label { font-size: 0.75rem; }
 
   /* Tarjetas más pequeñas */
   .artefactos-grid {
@@ -1134,6 +1152,10 @@ body {
   .header-sub   { font-size: 0.7rem; }
   .header-logo  { width: 40px; height: 40px; }
 
-  /* Medio de pago en columna */
+  /* Medios de pago en columna */
   .radio-group--horizontal { flex-direction: column; }
+
+  /* Modal body con menos padding */
+  .modal-body { padding: 14px 14px 8px; gap: 12px; }
+  .modal-footer { padding: 12px 14px; }
 }
