@@ -19,49 +19,20 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-// ── Enviar a Apps Script via formulario (sin CORS) ─
-function enviarAScript(nombre, contenidoBase64) {
-  return new Promise((resolve) => {
-    try {
-      const form   = document.createElement('form');
-      form.method  = 'POST';
-      form.action  = DRIVE_CONFIG.scriptURL;
-      form.target  = 'drive_iframe';
-      form.style.display = 'none';
-
-      const addField = (name, value) => {
-        const input = document.createElement('input');
-        input.type  = 'hidden';
-        input.name  = name;
-        input.value = value;
-        form.appendChild(input);
-      };
-
-      addField('nombre',    nombre);
-      addField('contenido', contenidoBase64);
-
-      // Iframe oculto para capturar respuesta sin navegar
-      let iframe = document.getElementById('drive_iframe');
-      if (!iframe) {
-        iframe      = document.createElement('iframe');
-        iframe.name = 'drive_iframe';
-        iframe.id   = 'drive_iframe';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-      }
-
-      document.body.appendChild(form);
-      form.submit();
-      form.remove();
-
-      // Esperar 3 segundos y asumir éxito
-      setTimeout(() => resolve({ ok: true, fileId: 'drive' }), 3000);
-
-    } catch(err) {
-      console.error('Error enviando a Drive:', err);
-      resolve({ ok: false, error: err.message });
-    }
-  });
+// ── Enviar a Apps Script (no-cors con text/plain) ──
+async function enviarAScript(nombre, contenidoBase64) {
+  try {
+    await fetch(DRIVE_CONFIG.scriptURL, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ nombre, contenido: contenidoBase64 }),
+    });
+    return { ok: true, fileId: 'drive' };
+  } catch(err) {
+    console.error('Error enviando a Drive:', err);
+    return { ok: false, error: err.message };
+  }
 }
 
 // ── Subir PDF limpio a Google Drive ────────────────
