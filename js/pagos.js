@@ -226,6 +226,27 @@ async function procesarPago() {
     return;
   }
 
+  // Validar WhatsApp — 9 dígitos, empieza con 9
+  if (whatsapp) {
+    const soloNumeros = whatsapp.replace(/\s|-/g, '');
+    if (!/^9\d{8}$/.test(soloNumeros)) {
+      errEl.textContent   = 'El número WhatsApp debe tener 9 dígitos y empezar con 9. Ej: 987654321';
+      errEl.style.display = 'block';
+      document.getElementById('pagoWhatsapp').focus();
+      return;
+    }
+  }
+
+  // Validar correo
+  if (correo && !whatsapp) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+      errEl.textContent   = 'Ingresa un correo electrónico válido. Ej: nombre@gmail.com';
+      errEl.style.display = 'block';
+      document.getElementById('pagoCorreo').focus();
+      return;
+    }
+  }
+
   const contacto    = whatsapp ? `WA: ${whatsapp}` : `Email: ${correo}`;
   const ahora       = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
   const nombreModal = pagoActual.nombre   || 'Cliente';
