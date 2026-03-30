@@ -25,7 +25,7 @@ const BCP_TITULAR   = 'Niquel Mendoza M.';
 const WA_NUMERO     = '51925030742';
 
 const PRECIOS = {
-  certificado: { label: 'Certificado PDF firmado', monto: 50.00 },
+  certificado: { label: 'Cuadro de Cargas Certificado', monto: 50.00 },
   xlsx:        { label: 'Descarga XLSX editable',  monto: 3.00  },
 };
 
@@ -238,36 +238,13 @@ async function procesarPago() {
   btnWA.disabled    = true;
   btnWA.textContent = '⏳ Procesando...';
 
-  // Si es PDF certificado → subir a Google Drive
-  let linkDrive = '—';
-  if (pagoActual.tipo === 'certificado') {
-    const stats = Calculos.calcularTodo(
-      datosActuales.map((d, idx) => ({ ...d, cantidad: cantidades[idx] || 0 })),
-      parseFloat(document.getElementById('inputTarifa').value) || 0.70
-    );
+  // Ambos servicios generan XLS y suben a Drive
+  const clave = generarClaveXLSX(numSolicitud);
+  pagoActual.claveXLSX = clave;
+  subirXLSADrive(clave, numSolicitud); // async, no bloqueante
 
-    const resultado = await subirCuadroADrive({
-      nombre:    nombreModal,
-      direccion: dirModal,
-      rubro:     pagoActual.rubro,
-      contacto,
-    }, stats);
-
-    if (resultado.ok) {
-      linkDrive = `https://drive.google.com/file/d/${resultado.fileId}/view`;
-      console.log('PDF subido a Drive:', linkDrive);
-    }
-  }
-
-  // Si es XLSX → generar clave PRIMERO (para que llegue a Sheets)
-  if (pagoActual.tipo === 'xlsx') {
-    const clave = generarClaveXLSX(numSolicitud);
-    pagoActual.claveXLSX = clave;
-    subirXLSADrive(clave, numSolicitud); // async, no bloqueante
-  }
-
-  // Enviar a Google Sheets (ya tiene la clave XLSX generada)
-  enviarSolicitudSheets({ ahora, contacto, medio, linkDrive, numSolicitud });
+  // Enviar a Google Sheets
+  enviarSolicitudSheets({ ahora, contacto, medio, linkDrive: '— Ver en Drive', numSolicitud });
 
   // Mensaje WhatsApp al cliente
   const msgCliente = encodeURIComponent(
@@ -551,14 +528,8 @@ async function subirXLSADrive(clave, numSolicitud) {
     const base64   = btoa(unescape(encodeURIComponent(html)));
     const nombreArchivo = `XLS_${numSolicitud}_${rubro}.xls`;
 
-    const res = await fetch(DRIVE_CONFIG.scriptURL, {
-      method:  'POST',
-      mode:    'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body:    JSON.stringify({ nombre: nombreArchivo, contenido: base64 }),
-    });
-
-    // no-cors no devuelve respuesta — el archivo llegó a Drive
+    // Subir a Drive via Apps Script
+    await enviarADrive(nombreArchivo, base64);
     const linkDrive = '— Ver en Drive';
 
     // Registrar en Sheets con link y clave
