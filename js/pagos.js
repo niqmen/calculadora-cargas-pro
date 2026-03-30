@@ -152,6 +152,19 @@ function inyectarModalPago() {
     r.addEventListener('change', actualizarMedioPago)
   );
   document.getElementById('btnPagoWhatsapp').addEventListener('click', procesarPago);
+
+  // QR zoom al hacer clic
+  document.querySelector('.qr-yape').addEventListener('click', () => {
+    const overlay = document.createElement('div');
+    overlay.className = 'qr-zoom-overlay';
+    overlay.innerHTML = `
+      <img src="img/qr_yape.webp" alt="QR Yape">
+      <div class="qr-zoom-label">📱 Yapea al: ${YAPE_NUMERO}</div>
+      <div class="qr-zoom-hint">Toca en cualquier lugar para cerrar</div>
+    `;
+    overlay.addEventListener('click', () => overlay.remove());
+    document.body.appendChild(overlay);
+  });
 }
 
 // ── Abrir modal de pago ────────────────────────────
