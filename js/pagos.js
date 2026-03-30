@@ -524,35 +524,13 @@ async function subirXLSADrive(clave, numSolicitud) {
     const cond = obtenerConductor(stats.potenciaFinal);
 
     // Generar HTML del XLS
-    const html     = generarHTMLXLS(nombre, direccion, rubro, ahora, numSolicitud, stats, ft, cond);
-    const base64   = btoa(unescape(encodeURIComponent(html)));
+    const html          = generarHTMLXLS(nombre, direccion, rubro, ahora, numSolicitud, stats, ft, cond);
+    const base64        = btoa(unescape(encodeURIComponent(html)));
     const nombreArchivo = `XLS_${numSolicitud}_${rubro}.xls`;
 
-    // Subir a Drive via Apps Script
+    // Solo subir a Drive — el registro en Sheets lo hace procesarPago
     await enviarADrive(nombreArchivo, base64);
-    const linkDrive = '— Ver en Drive';
-
-    // Registrar en Sheets con link y clave
-    const contacto = pagoActual.contacto || '—';
-    const params   = new URLSearchParams({
-      [PAGOS_FIELDS.fecha_hora]:      new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' }),
-      [PAGOS_FIELDS.nombre_cliente]:  nombre,
-      [PAGOS_FIELDS.direccion]:       direccion,
-      [PAGOS_FIELDS.rubro]:           rubro,
-      [PAGOS_FIELDS.potencia_kw]:     `${stats.potenciaFinal.toFixed(3)} kW`,
-      [PAGOS_FIELDS.tipo_servicio]:   `XLSX | N: ${numSolicitud}`,
-      [PAGOS_FIELDS.medio_pago]:      pagoActual.medio || '—',
-      [PAGOS_FIELDS.whatsapp_correo]: `${contacto} | Clave: ${clave} | Drive: ${linkDrive}`,
-      [PAGOS_FIELDS.estado]:          'Por atender',
-    });
-
-    fetch(PAGOS_FORM_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: params.toString(),
-    }).catch(() => {});
-
-    console.log(`XLS subido: ${linkDrive} | Clave: ${clave}`);
+    console.log(`XLS subido a Drive | Clave: ${clave}`);
 
   } catch(err) {
     console.error('Error subiendo XLS:', err);
