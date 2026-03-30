@@ -1014,8 +1014,8 @@ body {
 }
 .instr-body--bcp { flex-direction: column; align-items: flex-start; }
 .qr-yape {
-  width: 90px;
-  height: 90px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
   border-radius: 6px;
   border: 1px solid var(--gris-borde);
@@ -1077,6 +1077,7 @@ body {
   .resultados-panel {
     position: static;
     order: -1;
+    max-height: none;
   }
   .header-inner {
     flex-direction: column;
@@ -1089,10 +1090,50 @@ body {
   .header-selector { width: 100%; flex-direction: column; align-items: flex-start; }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  /* Modal de pago en móvil */
+  .modal-pago { max-width: 100%; }
+  .modal { padding: 0; }
+  .modal-body { padding: 12px; gap: 10px; }
+  .modal-footer { padding: 12px; }
+
+  /* QR más grande en móvil para escanear fácil */
+  .qr-yape { width: 160px; height: 160px; }
+
+  /* Instrucciones Yape en columna en móvil */
+  .instr-body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .instr-datos { align-items: center; }
+  .instr-fila { justify-content: center; }
+
+  /* Botones de exportar más grandes en móvil */
+  .btn-reset,
+  .btn-preview,
+  .btn-export-pdf,
+  .btn-export-xlsx {
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+
+  /* Panel resultados compacto */
+  .resultado-final-valor { font-size: 2rem; }
+  .resultado-final-label { font-size: 0.75rem; }
+
+  /* Tarjetas más pequeñas */
   .artefactos-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 8px;
     padding: 10px;
   }
+
+  /* Header compacto */
+  .header-title { font-size: 1.1rem; }
+  .header-sub   { font-size: 0.7rem; }
+  .header-logo  { width: 40px; height: 40px; }
+
+  /* Medio de pago en columna */
+  .radio-group--horizontal { flex-direction: column; }
 }
