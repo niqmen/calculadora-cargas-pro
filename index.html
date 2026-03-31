@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Cuadro de Cargas Pro</title>
+
+  <!-- ═══ PWA ═══ -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#F5C400">
+  <meta name="description" content="Calcula demanda máxima según Res. 1908-2001 OSINERGMIN — Ing. Niquel Mendoza M., electricista colegiado Perú.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Cuadro Cargas">
+  <link rel="apple-touch-icon" href="img/icons/icon-192.png">
+  <!-- ══════════ -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -162,13 +175,11 @@
       </div>
       <div class="modal-body">
 
-        <!-- Nombre -->
         <div class="modal-campo">
           <label for="inputNombre">Nombre del equipo</label>
           <input type="text" id="inputNombre" placeholder="Ej: Compresor de aire 2HP">
         </div>
 
-        <!-- Unidad de ingreso -->
         <div class="modal-campo">
           <label>Unidad de ingreso</label>
           <div class="radio-group radio-group--horizontal">
@@ -187,14 +198,12 @@
           </div>
         </div>
 
-        <!-- Valor (kW / HP / A) -->
         <div class="modal-campo">
           <label id="labelValor">Potencia (kW)</label>
           <input type="number" id="inputValor" placeholder="Ej: 1.5" min="0.001" step="0.001">
           <div id="previewKW" class="preview-kw" style="display:none"></div>
         </div>
 
-        <!-- Factor de potencia (solo visible en Amperios) -->
         <div class="modal-campo" id="filaFactorPotencia" style="display:none">
           <label for="inputFP">Factor de potencia (cosφ)</label>
           <div class="fp-row">
@@ -203,7 +212,6 @@
           </div>
         </div>
 
-        <!-- Tipo de conexión -->
         <div class="modal-campo">
           <label>Tipo de conexión</label>
           <div class="radio-group">
@@ -231,10 +239,9 @@
     </div>
   </div>
 
-  <!-- jsPDF para generar PDF en el navegador -->
+  <!-- CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-  <!-- SheetJS para exportar XLSX -->
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
   <!-- Módulos JS propios -->
   <script src="js/calculos.js?v=9"></script>
@@ -243,6 +250,52 @@
   <script src="js/modal.js?v=9"></script>
   <script src="js/drive.js?v=9"></script>
   <script src="js/pagos.js?v=9"></script>
+
+  <!-- ═══ PWA: registro del Service Worker ═══ -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/calculadora-cargas-pro/service-worker.js')
+          .then(reg => {
+            reg.addEventListener('updatefound', () => {
+              const sw = reg.installing;
+              sw.addEventListener('statechange', () => {
+                if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+                  _mostrarAvisoUpdate(sw);
+                }
+              });
+            });
+          })
+          .catch(err => console.warn('[PWA] SW error:', err));
+      });
+    }
+
+    function _mostrarAvisoUpdate(sw) {
+      const d = document.createElement('div');
+      d.style.cssText = [
+        'position:fixed;bottom:80px;left:50%;transform:translateX(-50%)',
+        'background:#1a1a1a;border:1px solid #F5C400;color:#fff',
+        'padding:12px 20px;border-radius:8px;z-index:9999',
+        'display:flex;gap:12px;align-items:center',
+        'font-family:Barlow,sans-serif;font-size:14px',
+        'box-shadow:0 4px 20px rgba(0,0,0,.5);max-width:320px'
+      ].join(';');
+      d.innerHTML = `
+        <span>⚡ Nueva versión disponible</span>
+        <button id="_btnUpdate"
+          style="background:#F5C400;color:#111;border:none;padding:6px 14px;
+                 border-radius:4px;cursor:pointer;font-weight:600;white-space:nowrap">
+          Actualizar
+        </button>`;
+      document.body.appendChild(d);
+      document.getElementById('_btnUpdate').onclick = () => {
+        sw.postMessage({ type: 'SKIP_WAITING' });
+        location.reload();
+      };
+      setTimeout(() => d.remove(), 12000);
+    }
+  </script>
+  <!-- ══════════════════════════════════════ -->
 
 </body>
 </html>
