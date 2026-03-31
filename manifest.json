@@ -1,0 +1,23 @@
+{
+  "name": "Calculadora de Cuadro de Cargas Pro",
+  "short_name": "Cuadro Cargas",
+  "description": "Calcula demanda máxima según Res. 1908-2001 OSINERGMIN — Ing. Niquel Mendoza M.",
+  "start_url": "/calculadora-cargas-pro/",
+  "scope": "/calculadora-cargas-pro/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#111214",
+  "theme_color": "#F5C400",
+  "lang": "es-PE",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    { "src": "img/icons/icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-96.png",  "sizes": "96x96",   "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "img/icons/icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
