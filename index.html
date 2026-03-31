@@ -21,6 +21,40 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ── Botón instalar PWA ── */
+    #btnInstalarPWA {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      background: #F5C400;
+      color: #111214;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(245,196,0,0.25);
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    #btnInstalarPWA:hover  { background: #ffd000; transform: translateY(-1px); }
+    #btnInstalarPWA:active { transform: translateY(0); }
+    @media (max-width: 600px) {
+      #btnInstalarPWA {
+        width: 100%;
+        justify-content: center;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        margin-top: 4px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -34,22 +68,28 @@
           <span class="header-sub">Calculadora de Demanda Máxima</span>
         </div>
       </div>
+      <!-- BOTÓN INSTALAR PWA — se muestra solo si el navegador lo soporta -->
+      <button id="btnInstalarPWA" style="display:none"
+        aria-label="Instalar aplicación">
+        Instalar App
+      </button>
+
       <div class="header-selector">
-        <label for="rubroSelect" class="selector-label">⚡ Tipo de instalación</label>
+        <label for="rubroSelect" class="selector-label"> Tipo de instalacion</label>
         <div class="select-wrapper">
           <select id="rubroSelect">
             <option value="">— Selecciona un rubro —</option>
-            <option value="residencial">🏠 Residencial</option>
+            <option value="residencial">Residencial</option>
             <optgroup label="── Rubros Comerciales ──">
-              <option value="panaderia">🍞 Panadería</option>
-              <option value="carpinteria">🪵 Carpintería</option>
-              <option value="carpinteria_metalica">🔧 Carpintería Metálica</option>
-              <option value="consultorio_dental">🦷 Consultorio Dental</option>
-              <option value="imprenta">🖨️ Imprenta</option>
-              <option value="polleria">🍗 Pollería</option>
-              <option value="restaurante">🍽️ Restaurante</option>
-              <option value="carniceria">🥩 Carnicería</option>
-              <option value="minimarket">🛒 Minimarket</option>
+              <option value="panaderia">Panadería</option>
+              <option value="carpinteria">Carpintería</option>
+              <option value="carpinteria_metalica">Carpintería Metálica</option>
+              <option value="consultorio_dental">Consultorio Dental</option>
+              <option value="imprenta">Imprenta</option>
+              <option value="polleria">Pollería</option>
+              <option value="restaurante">Restaurante</option>
+              <option value="carniceria">Carnicería</option>
+              <option value="minimarket">Minimarket</option>
             </optgroup>
           </select>
         </div>
@@ -63,7 +103,7 @@
     <!-- PANEL IZQUIERDO: artefactos -->
     <section class="artefactos-panel" id="artefactosPanel">
       <div class="empty-state" id="emptyState">
-        <div class="empty-icon">⚡</div>
+        <div class="empty-icon"></div>
         <p>Selecciona un rubro para comenzar</p>
       </div>
       <div id="zonasContainer" class="zonas-container" style="display:none"></div>
@@ -72,7 +112,7 @@
     <!-- PANEL DERECHO: resultados -->
     <aside class="resultados-panel">
       <div class="resultados-header">
-        <span class="resultados-icon">📊</span>
+        <span class="resultados-icon"></span>
         <h2>Resultados</h2>
       </div>
 
@@ -119,7 +159,7 @@
       </div>
 
       <div class="resultado-final-box">
-        <div class="resultado-final-label">⚡ POTENCIA MÍNIMA A CONTRATAR</div>
+        <div class="resultado-final-label"> POTENCIA MÍNIMA A CONTRATAR</div>
         <div class="resultado-final-valor" id="resPotenciaFinal">0.00 kW</div>
       </div>
 
@@ -139,10 +179,10 @@
       </div>
 
       <div class="botones-export">
-        <button class="btn-reset" id="btnReset">🔄 Reiniciar</button>
-        <button class="btn-preview" id="btnPreview">👁️ Vista Previa</button>
-        <button class="btn-export-pdf" id="btnPDF">📄 Certificar PDF — S/. 50</button>
-        <button class="btn-export-xlsx" id="btnXLSX">📥 Descargar XLSX — S/. 3</button>
+        <button class="btn-reset" id="btnReset">Reiniciar</button>
+        <button class="btn-preview" id="btnPreview">Vista Previa</button>
+        <button class="btn-export-pdf" id="btnPDF">Certificar PDF — S/. 50</button>
+        <button class="btn-export-xlsx" id="btnXLSX">Descargar XLSX — S/. 3</button>
       </div>
 
       <div class="resultados-footer">
@@ -156,10 +196,10 @@
   <div class="modal-overlay modal-fullscreen" id="modalVistaPrevia">
     <div class="modal modal-vp">
       <div class="modal-header">
-        <span>👁️ Vista Previa — Cuadro de Cargas BORRADOR</span>
+        <span>Vista Previa — Cuadro de Cargas BORRADOR</span>
         <div style="display:flex;gap:8px;align-items:center">
-          <button class="btn-vp-descargar" id="btnVPDescargar">⬇️ Descargar PDF borrador</button>
-          <button class="modal-cerrar" id="modalVPCerrar">✕</button>
+          <button class="btn-vp-descargar" id="btnVPDescargar">Descargar PDF borrador</button>
+          <button class="modal-cerrar" id="modalVPCerrar">Cerrar</button>
         </div>
       </div>
       <div class="modal-vp-body" id="modalVPBody"></div>
@@ -170,8 +210,8 @@
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <div class="modal-header">
-        <span>➕ Agregar carga personalizada</span>
-        <button class="modal-cerrar" id="modalCerrar">✕</button>
+        <span>Agregar carga personalizada</span>
+        <button class="modal-cerrar" id="modalCerrar">Cerrar</button>
       </div>
       <div class="modal-body">
 
@@ -234,7 +274,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn-modal-cancelar" id="btnModalCancelar">Cancelar</button>
-        <button class="btn-modal-agregar" id="btnModalAgregar">➕ Agregar</button>
+        <button class="btn-modal-agregar" id="btnModalAgregar">Agregar</button>
       </div>
     </div>
   </div>
@@ -270,6 +310,33 @@
       });
     }
 
+    /* ── Botón instalar PWA ── */
+    let _deferredPrompt = null;
+    const _btnInstalar  = document.getElementById('btnInstalarPWA');
+
+    /* Capturar el evento antes de que el navegador lo descarte */
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      _deferredPrompt = e;
+      _btnInstalar.style.display = 'flex';
+    });
+
+    _btnInstalar.addEventListener('click', async () => {
+      if (!_deferredPrompt) return;
+      _deferredPrompt.prompt();
+      const { outcome } = await _deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        _btnInstalar.style.display = 'none';
+      }
+      _deferredPrompt = null;
+    });
+
+    /* Ocultar si ya está instalada */
+    window.addEventListener('appinstalled', () => {
+      _btnInstalar.style.display = 'none';
+      _deferredPrompt = null;
+    });
+
     function _mostrarAvisoUpdate(sw) {
       const d = document.createElement('div');
       d.style.cssText = [
@@ -281,7 +348,7 @@
         'box-shadow:0 4px 20px rgba(0,0,0,.5);max-width:320px'
       ].join(';');
       d.innerHTML = `
-        <span>⚡ Nueva versión disponible</span>
+        <span>Nueva version disponible</span>
         <button id="_btnUpdate"
           style="background:#F5C400;color:#111;border:none;padding:6px 14px;
                  border-radius:4px;cursor:pointer;font-weight:600;white-space:nowrap">
