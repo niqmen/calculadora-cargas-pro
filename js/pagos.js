@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   pagos.js — Modal de pago Yape / Depósito BCP
+   pagos.js — Modal Solicitar Cuadro Certificado
    Calculadora de Cuadro de Cargas Pro
    Ing. Niquel Mendoza M.
 ═══════════════════════════════════════════════════ */
@@ -18,123 +18,68 @@ const PAGOS_FIELDS = {
   estado:          'entry.688163085',
 };
 
-const YAPE_NUMERO   = '51925030742';
-const BCP_CUENTA    = '19401153157004';
-const BCP_CCI       = '00219410115315700498';
-const BCP_TITULAR   = 'Niquel Mendoza M.';
-const WA_NUMERO     = '51925030742';
+const WA_NUMERO   = '51925030742';
+const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyxbrrWQog2DqWadObvuMy0xGarcp_XsdSe6ziXWl2u0A-oAGyU2CeVmamldbJbe_NW/exec';
 
-const PRECIOS = {
-  certificado: { label: 'Cuadro de Cargas Certificado', monto: 50.00 },
-  xlsx:        { label: 'Descarga XLSX editable',  monto: 3.00  },
-};
+// ── Estado ─────────────────────────────────────────
+let solicitudActual = { nombre: '', direccion: '', rubro: '', potencia: 0 };
 
-const TERMINOS = `TÉRMINOS Y CONDICIONES\n\nLa precisión del resultado depende de la selección adecuada de los datos e información proporcionada por el usuario. Este cuadro de cargas es aplicable a instalaciones proyectadas donde se tienen definidas las cargas a implementar, o a instalaciones existentes donde se tiene conocimiento de las cargas instaladas.\n\nSe recomienda siempre contactar con un profesional electricista colegiado en caso de requerir asesoramiento técnico y mayor precisión en el cuadro de cargas.\n\nEl documento generado es referencial y no reemplaza el criterio técnico del proyectista o instalador responsable.`;
-
-// ── Estado del modal de pago ───────────────────────
-let pagoActual = { tipo: '', nombre: '', direccion: '', rubro: '', potencia: 0 };
-
-// ── Inyectar HTML del modal ────────────────────────
+// ── Inyectar HTML del modal solicitud ──────────────
 function inyectarModalPago() {
   const html = `
   <div class="modal-overlay" id="modalPagoOverlay">
     <div class="modal modal-pago">
 
       <div class="modal-header">
-        <span id="modalPagoTitulo">💳 Completar pedido</span>
+        <span id="modalPagoTitulo">📋 Solicitar Cuadro Certificado</span>
         <button class="modal-cerrar" id="modalPagoCerrar">✕</button>
       </div>
 
       <div class="modal-body">
 
-        <!-- Servicio y precio -->
         <div class="pago-servicio">
-          <div class="pago-servicio-label" id="pagoServicioLabel">—</div>
-          <div class="pago-servicio-monto" id="pagoServicioMonto">S/. 0.00</div>
+          <div class="pago-servicio-label">Cuadro de Cargas Certificado — Firmado por Ing. CIP</div>
+          <div class="pago-servicio-monto" style="font-size:0.85rem;color:#5A6070;font-weight:500">desde S/ 180</div>
         </div>
 
-        <!-- Datos del cliente -->
         <div class="modal-campo">
-          <label for="pagoNombre">Nombre completo</label>
-          <input type="text" id="pagoNombre" placeholder="Ej: Juan Pérez García">
-        </div>
-        <div class="modal-campo">
-          <label for="pagoDireccion">Dirección de la instalación</label>
-          <input type="text" id="pagoDireccion" placeholder="Ej: Av. Los Olivos 123, Lima">
+          <label for="pagoNombre">Nombre completo / Razón social</label>
+          <input type="text" id="pagoNombre" placeholder="Ej: Juan Pérez García o Panadería El Sol SAC">
         </div>
 
-        <!-- Datos de entrega -->
         <div class="modal-campo">
-          <label>¿Dónde enviamos tu documento?</label>
-          <div class="entrega-row">
-            <div class="entrega-campo">
-              <span class="entrega-icono">📱</span>
-              <input type="tel" id="pagoWhatsapp" placeholder="WhatsApp ej: 987654321">
-            </div>
-            <div class="entrega-sep">— o —</div>
-            <div class="entrega-campo">
-              <span class="entrega-icono">📧</span>
-              <input type="email" id="pagoCorreo" placeholder="Correo electrónico">
-            </div>
-          </div>
-          <div class="entrega-hint">Solo necesitamos uno de los dos</div>
+          <label for="pagoDireccion">Dirección del local</label>
+          <input type="text" id="pagoDireccion" placeholder="Ej: Av. Los Olivos 123, Ate, Lima">
         </div>
 
-        <!-- Medio de pago -->
         <div class="modal-campo">
-          <label>Elige tu medio de pago</label>
-          <div class="radio-group radio-group--horizontal">
-            <label class="radio-opcion" id="optYape">
-              <input type="radio" name="medioPago" value="yape" checked>
-              <span>📱 Yape</span>
-            </label>
-            <label class="radio-opcion" id="optBCP">
-              <input type="radio" name="medioPago" value="bcp">
-              <span>🏦 Depósito BCP</span>
-            </label>
+          <label for="pagoRubro">Rubro</label>
+          <input type="text" id="pagoRubro" readonly
+            style="background:#F4F5F7;color:#5A6070;cursor:not-allowed">
+        </div>
+
+        <div class="modal-campo">
+          <label for="pagoWhatsapp">N° WhatsApp <span style="color:#B00">*</span></label>
+          <input type="tel" id="pagoWhatsapp" placeholder="Ej: 987654321"
+            maxlength="9">
+          <div style="font-size:0.72rem;color:#888;margin-top:3px">
+            9 dígitos, empezando en 9 — te contactaremos por aquí
           </div>
         </div>
-
-        <!-- Instrucciones Yape -->
-        <div id="instrYape" class="instrucciones-pago">
-          <div class="instr-header">Datos para Yapear</div>
-          <div class="instr-body">
-            <img src="img/qr_yape.webp" alt="QR Yape" class="qr-yape">
-            <div class="instr-datos">
-              <div class="instr-fila"><span>Número:</span><strong>${YAPE_NUMERO}</strong></div>
-              <div class="instr-fila"><span>Titular:</span><strong>${BCP_TITULAR}</strong></div>
-              <div class="instr-monto" id="instrYapeMonto">S/. 0.00</div>
-              <p class="instr-nota">Yapea el monto exacto y envíanos el comprobante por WhatsApp.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Instrucciones BCP -->
-        <div id="instrBCP" class="instrucciones-pago" style="display:none">
-          <div class="instr-header">Datos para Depósito BCP</div>
-          <div class="instr-body instr-body--bcp">
-            <div class="instr-datos">
-              <div class="instr-fila"><span>Titular:</span><strong>${BCP_TITULAR}</strong></div>
-              <div class="instr-fila"><span>Cta. Soles:</span><strong>${BCP_CUENTA}</strong></div>
-              <div class="instr-fila"><span>CCI:</span><strong>${BCP_CCI}</strong></div>
-              <div class="instr-monto" id="instrBCPMonto">S/. 0.00</div>
-              <p class="instr-nota">Realiza el depósito y envíanos el comprobante por WhatsApp.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Términos -->
-        <details class="terminos-detalle">
-          <summary>📋 Términos y condiciones</summary>
-          <div class="terminos-texto">${TERMINOS.replace(/\n/g, '<br>')}</div>
-        </details>
 
         <div id="modalPagoError" class="modal-error" style="display:none"></div>
+
+        <div style="background:#E3F2FD;border-left:4px solid #0D47A1;border-radius:0 8px 8px 0;
+                    padding:12px;margin-top:8px;font-size:0.78rem;color:#0D47A1;line-height:1.5">
+          ✅ Recibirás un PDF borrador para revisión antes de confirmar el pago.<br>
+          ⚡ Entrega del documento firmado en 15 min tras confirmación.
+        </div>
+
       </div>
 
       <div class="modal-footer">
         <button class="btn-modal-cancelar" id="btnPagoCancelar">Cancelar</button>
-        <button class="btn-modal-agregar" id="btnPagoWhatsapp">💬 Enviar comprobante por WhatsApp</button>
+        <button class="btn-modal-agregar" id="btnEnviarSolicitud">Enviar solicitud</button>
       </div>
 
     </div>
@@ -142,69 +87,41 @@ function inyectarModalPago() {
 
   document.body.insertAdjacentHTML('beforeend', html);
 
-  // Eventos
   document.getElementById('modalPagoCerrar').addEventListener('click', cerrarModalPago);
   document.getElementById('btnPagoCancelar').addEventListener('click', cerrarModalPago);
   document.getElementById('modalPagoOverlay').addEventListener('click', e => {
     if (e.target === document.getElementById('modalPagoOverlay')) cerrarModalPago();
   });
-  document.querySelectorAll('input[name="medioPago"]').forEach(r =>
-    r.addEventListener('change', actualizarMedioPago)
-  );
-  document.getElementById('btnPagoWhatsapp').addEventListener('click', procesarPago);
-
-  // QR zoom al hacer clic
-  document.querySelector('.qr-yape').addEventListener('click', () => {
-    const overlay = document.createElement('div');
-    overlay.className = 'qr-zoom-overlay';
-    overlay.innerHTML = `
-      <img src="img/qr_yape.webp" alt="QR Yape">
-      <div class="qr-zoom-label">📱 Yapea al: ${YAPE_NUMERO}</div>
-      <div class="qr-zoom-hint">Toca en cualquier lugar para cerrar</div>
-    `;
-    overlay.addEventListener('click', () => overlay.remove());
-    document.body.appendChild(overlay);
-  });
+  document.getElementById('btnEnviarSolicitud').addEventListener('click', procesarSolicitud);
 }
 
-// ── Abrir modal de pago ────────────────────────────
+// ── Abrir modal solicitud ──────────────────────────
 function abrirModalPago(tipo) {
-  const stats = Calculos.calcularTodo(
-    datosActuales.map((d, idx) => ({ ...d, cantidad: cantidades[idx] || 0 })),
-    parseFloat(document.getElementById('inputTarifa').value) || 0.70
-  );
-
   if (!datosActuales.some((_, idx) => (cantidades[idx] || 0) > 0)) {
     alert('Selecciona al menos un artefacto antes de continuar.');
     return;
   }
 
-  const precio = PRECIOS[tipo];
   const rubroLabel = (rubroSelect.options[rubroSelect.selectedIndex]?.text || rubroSelect.value)
     .replace(/[^\w\s\-áéíóúÁÉÍÓÚñÑ]/gu, '').trim();
 
-  pagoActual = {
-    tipo,
-    rubro:      rubroLabel,
-    potencia:   stats.potenciaFinal,
-    precio:     precio.monto,
-    label:      precio.label,
-    nombre:     '',
-    direccion:  '',
+  const stats = Calculos.calcularTodo(
+    datosActuales.map((d, idx) => ({ ...d, cantidad: cantidades[idx] || 0 })),
+    parseFloat(document.getElementById('inputTarifa').value) || 0.70
+  );
+
+  solicitudActual = {
+    rubro:    rubroLabel,
+    potencia: stats.potenciaFinal,
+    nombre:   '',
+    direccion: '',
   };
 
-  document.getElementById('pagoServicioLabel').textContent = precio.label;
-  document.getElementById('pagoServicioMonto').textContent = `S/. ${precio.monto.toFixed(2)}`;
-  document.getElementById('instrYapeMonto').textContent    = `S/. ${precio.monto.toFixed(2)}`;
-  document.getElementById('instrBCPMonto').textContent     = `S/. ${precio.monto.toFixed(2)}`;
-  document.getElementById('pagoWhatsapp').value  = '';
-  document.getElementById('pagoCorreo').value    = '';
-  document.getElementById('pagoNombre').value    = '';
+  document.getElementById('pagoRubro').value    = rubroLabel;
+  document.getElementById('pagoNombre').value   = '';
   document.getElementById('pagoDireccion').value = '';
+  document.getElementById('pagoWhatsapp').value  = '';
   document.getElementById('modalPagoError').style.display = 'none';
-  document.querySelector('input[name="medioPago"][value="yape"]').checked = true;
-  actualizarMedioPago();
-
   document.getElementById('modalPagoOverlay').classList.add('visible');
 }
 
@@ -212,110 +129,90 @@ function cerrarModalPago() {
   document.getElementById('modalPagoOverlay').classList.remove('visible');
 }
 
-function actualizarMedioPago() {
-  const medio = document.querySelector('input[name="medioPago"]:checked').value;
-  document.getElementById('instrYape').style.display = medio === 'yape' ? 'block' : 'none';
-  document.getElementById('instrBCP').style.display  = medio === 'bcp'  ? 'block' : 'none';
-}
+// ── Procesar solicitud ─────────────────────────────
+async function procesarSolicitud() {
+  const nombre    = document.getElementById('pagoNombre').value.trim();
+  const direccion = document.getElementById('pagoDireccion').value.trim();
+  const whatsapp  = document.getElementById('pagoWhatsapp').value.trim();
+  const errEl     = document.getElementById('modalPagoError');
 
-// ── Procesar pago → Drive + WhatsApp + Google Sheets ─
-async function procesarPago() {
-  const whatsapp    = document.getElementById('pagoWhatsapp').value.trim();
-  const correo      = document.getElementById('pagoCorreo').value.trim();
-  const medio       = document.querySelector('input[name="medioPago"]:checked').value;
-  const errEl       = document.getElementById('modalPagoError');
-  const nombreInput = document.getElementById('pagoNombre').value.trim();
-  const dirInput    = document.getElementById('pagoDireccion').value.trim();
-
-  // Guardar en pagoActual
-  pagoActual.nombre    = nombreInput || 'Cliente';
-  pagoActual.direccion = dirInput    || '—';
-  pagoActual.contacto  = whatsapp ? `WA: ${whatsapp}` : `Email: ${correo}`;
-  pagoActual.medio     = medio === 'yape' ? 'Yape' : 'Deposito BCP';
-
-  if (!whatsapp && !correo) {
-    errEl.textContent   = 'Ingresa tu WhatsApp o correo para recibir tu documento.';
+  // Validaciones
+  if (!nombre) {
+    errEl.textContent   = 'Ingresa tu nombre o razón social.';
     errEl.style.display = 'block';
+    document.getElementById('pagoNombre').focus();
+    return;
+  }
+  if (!direccion) {
+    errEl.textContent   = 'Ingresa la dirección del local.';
+    errEl.style.display = 'block';
+    document.getElementById('pagoDireccion').focus();
+    return;
+  }
+  if (!whatsapp) {
+    errEl.textContent   = 'Ingresa tu número de WhatsApp.';
+    errEl.style.display = 'block';
+    document.getElementById('pagoWhatsapp').focus();
+    return;
+  }
+  if (!/^9\d{8}$/.test(whatsapp.replace(/\s|-/g, ''))) {
+    errEl.textContent   = 'El número debe tener 9 dígitos y empezar con 9. Ej: 987654321';
+    errEl.style.display = 'block';
+    document.getElementById('pagoWhatsapp').focus();
     return;
   }
 
-  // Validar WhatsApp — 9 dígitos, empieza con 9
-  if (whatsapp) {
-    const soloNumeros = whatsapp.replace(/\s|-/g, '');
-    if (!/^9\d{8}$/.test(soloNumeros)) {
-      errEl.textContent   = 'El número WhatsApp debe tener 9 dígitos y empezar con 9. Ej: 987654321';
-      errEl.style.display = 'block';
-      document.getElementById('pagoWhatsapp').focus();
-      return;
-    }
-  }
+  solicitudActual.nombre    = nombre;
+  solicitudActual.direccion = direccion;
 
-  // Validar correo
-  if (correo && !whatsapp) {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-      errEl.textContent   = 'Ingresa un correo electrónico válido. Ej: nombre@gmail.com';
-      errEl.style.display = 'block';
-      document.getElementById('pagoCorreo').focus();
-      return;
-    }
-  }
+  const btn = document.getElementById('btnEnviarSolicitud');
+  btn.disabled    = true;
+  btn.textContent = '⏳ Enviando...';
 
-  const contacto    = whatsapp ? `WA: ${whatsapp}` : `Email: ${correo}`;
-  const ahora       = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
-  const nombreModal = pagoActual.nombre   || 'Cliente';
-  const dirModal    = pagoActual.direccion || '—';
-  const prefijo     = pagoActual.tipo === 'certificado' ? 'CC' : 'XLS';
-  const numSolicitud = `${prefijo}-${Date.now().toString().slice(-4)}`;
+  const ahora        = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
+  const numSolicitud = `CC-${Date.now().toString().slice(-5)}`;
 
-  // Deshabilitar botón mientras procesa
-  const btnWA = document.getElementById('btnPagoWhatsapp');
-  btnWA.disabled    = true;
-  btnWA.textContent = '⏳ Procesando...';
+  // 1) Subir XLS a Drive
+  subirXLSADrive(numSolicitud);
 
-  // Ambos servicios generan XLS y suben a Drive
-  subirXLSADrive(numSolicitud); // async, no bloqueante
+  // 2) Registrar en Google Sheets
+  enviarSolicitudSheets({ ahora, whatsapp, numSolicitud });
 
-  // Enviar a Google Sheets
-  enviarSolicitudSheets({ ahora, contacto, medio, linkDrive: '', numSolicitud });
+  // 3) Alerta WhatsApp automática al ingeniero
+  enviarAlertaWhatsApp({ nombre, direccion, whatsapp, numSolicitud });
 
-  // Mensaje WhatsApp al cliente
-  const msgCliente = encodeURIComponent(
-    `Hola Ing. Niquel, adjunto mi comprobante de pago.\n\n` +
-    `Servicio: ${pagoActual.label}\n` +
-    `Rubro: ${pagoActual.rubro}\n` +
-    `Potencia a contratar: ${pagoActual.potencia.toFixed(3)} kW\n` +
-    `Cliente: ${nombreModal}\n` +
-    (dirModal !== '—' ? `Direccion: ${dirModal}\n` : '') +
-    `Contacto: ${whatsapp || correo}\n` +
-    `Monto: S/. ${pagoActual.precio.toFixed(2)}\n` +
-    `Medio de pago: ${medio === 'yape' ? 'Yape' : 'Deposito BCP'}\n` +
-    `Fecha: ${ahora}`
-  );
+  btn.disabled    = false;
+  btn.textContent = 'Enviar solicitud';
 
-  btnWA.disabled    = false;
-  btnWA.textContent = '💬 Enviar comprobante por WhatsApp';
-
-  window.open(`https://wa.me/${WA_NUMERO}?text=${msgCliente}`, '_blank');
   cerrarModalPago();
-
-  // Mostrar confirmación al cliente
-  mostrarConfirmacion(nombreModal, contacto, pagoActual.tipo, numSolicitud);
+  mostrarConfirmacion(nombre, whatsapp, numSolicitud);
 }
 
-function enviarSolicitudSheets({ ahora, contacto, medio, linkDrive, numSolicitud }) {
-  const nombreModal = pagoActual.nombre    || '—';
-  const dirModal    = pagoActual.direccion || '—';
-  const driveInfo = linkDrive ? ` | Drive: ${linkDrive}` : '';
+// ── Enviar alerta al ingeniero via Apps Script ─────
+function enviarAlertaWhatsApp({ nombre, direccion, whatsapp, numSolicitud }) {
+  const potencia = solicitudActual.potencia.toFixed(3);
+  const rubro    = solicitudActual.rubro;
+  const mensaje  = `🔔 Nueva solicitud:\nN°: ${numSolicitud}\nNombre: ${nombre}\nDirección: ${direccion}\nRubro: ${rubro}\nWhatsApp: ${whatsapp}\nPotencia calculada: ${potencia} kW`;
 
+  fetch(APPS_SCRIPT, {
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body:    JSON.stringify({ accion: 'whatsapp', numero: WA_NUMERO, mensaje }),
+  }).catch(() => {});
+}
+
+// ── Registrar en Google Sheets ─────────────────────
+function enviarSolicitudSheets({ ahora, whatsapp, numSolicitud }) {
   const params = new URLSearchParams({
     [PAGOS_FIELDS.fecha_hora]:      ahora,
-    [PAGOS_FIELDS.nombre_cliente]:  nombreModal,
-    [PAGOS_FIELDS.direccion]:       dirModal,
-    [PAGOS_FIELDS.rubro]:           pagoActual.rubro,
-    [PAGOS_FIELDS.potencia_kw]:     `${pagoActual.potencia.toFixed(3)} kW`,
-    [PAGOS_FIELDS.tipo_servicio]:   `${pagoActual.label} | N°: ${numSolicitud}`,
-    [PAGOS_FIELDS.medio_pago]:      medio === 'yape' ? 'Yape' : 'Deposito BCP',
-    [PAGOS_FIELDS.whatsapp_correo]: contacto + driveInfo,
+    [PAGOS_FIELDS.nombre_cliente]:  solicitudActual.nombre,
+    [PAGOS_FIELDS.direccion]:       solicitudActual.direccion,
+    [PAGOS_FIELDS.rubro]:           solicitudActual.rubro,
+    [PAGOS_FIELDS.potencia_kw]:     `${solicitudActual.potencia.toFixed(3)} kW`,
+    [PAGOS_FIELDS.tipo_servicio]:   `Solicitud Cuadro Certificado | N°: ${numSolicitud}`,
+    [PAGOS_FIELDS.medio_pago]:      'Por coordinar',
+    [PAGOS_FIELDS.whatsapp_correo]: `WA: ${whatsapp}`,
     [PAGOS_FIELDS.estado]:          'Por atender',
   });
 
@@ -327,21 +224,13 @@ function enviarSolicitudSheets({ ahora, contacto, medio, linkDrive, numSolicitud
   }).catch(() => {});
 }
 
-// ── Pantalla de confirmación post-pago ─────────────
-function mostrarConfirmacion(nombre, contacto, tipo, numSolicitud) {
-  const esCertificado = tipo === 'certificado';
-  const msgWA         = encodeURIComponent(
-    `Hola, soy ${nombre}.\n` +
-    `No recibí mi ${esCertificado ? 'documento certificado' : 'archivo XLS'}.\n` +
-    `N° solicitud: ${numSolicitud}\n` +
-    `Contacto: ${contacto}`
-  );
-
+// ── Pantalla de confirmación ───────────────────────
+function mostrarConfirmacion(nombre, whatsapp, numSolicitud) {
   const div = document.createElement('div');
   div.style.cssText = `
-    position:fixed; inset:0; z-index:999;
+    position:fixed;inset:0;z-index:9999;
     background:rgba(0,0,0,0.65);
-    display:flex; align-items:center; justify-content:center;
+    display:flex;align-items:center;justify-content:center;
     padding:16px;
   `;
 
@@ -349,81 +238,52 @@ function mostrarConfirmacion(nombre, contacto, tipo, numSolicitud) {
     <div style="background:white;border-radius:12px;max-width:400px;width:100%;
                 overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.3);font-family:Arial,sans-serif">
 
-      <!-- Header -->
       <div style="background:#0D47A1;padding:18px 20px;text-align:center">
         <div style="font-size:2rem">✅</div>
         <div style="color:#F5C400;font-weight:800;font-size:1rem;
                     text-transform:uppercase;letter-spacing:1px;margin-top:4px">
-          ${esCertificado ? 'Solicitud recibida' : 'Verificando tu pago'}
+          Solicitud recibida
         </div>
       </div>
 
-      <!-- Cuerpo -->
       <div style="padding:20px">
-
-        <!-- Mensaje principal -->
         <p style="font-size:0.9rem;color:#1C1E22;margin:0 0 14px">
-          ${esCertificado
-            ? `Hola <strong>${nombre}</strong>, estamos procesando tu cuadro de cargas certificado.`
-            : `Hola <strong>${nombre}</strong>, estamos verificando tu pago. En breve te enviaremos el enlace de descarga.`
-          }
+          Hola <strong>${nombre}</strong>, recibimos tu solicitud.<br>
+          En breve nos ponemos en contacto contigo.
         </p>
 
-        <!-- Info solicitud -->
         <div style="background:#F4F5F7;border-radius:8px;padding:12px;
                     margin-bottom:14px;font-size:0.82rem;color:#5A6070">
           <div style="margin-bottom:4px"><strong style="color:#1C1E22">N° solicitud:</strong> ${numSolicitud}</div>
-          <div style="margin-bottom:4px"><strong style="color:#1C1E22">Servicio:</strong> ${pagoActual.label}</div>
-          <div><strong style="color:#1C1E22">Contacto registrado:</strong> ${contacto}</div>
+          <div style="margin-bottom:4px"><strong style="color:#1C1E22">Rubro:</strong> ${solicitudActual.rubro}</div>
+          <div><strong style="color:#1C1E22">WhatsApp registrado:</strong> ${whatsapp}</div>
         </div>
 
-        <!-- Tiempo de entrega -->
         <div style="background:#E3F2FD;border-left:4px solid #0D47A1;
-                    border-radius:0 8px 8px 0;padding:12px;margin-bottom:14px;
-                    font-size:0.82rem;color:#0D47A1">
-          ${esCertificado
-            ? `<strong>⏱️ Tiempo estimado:</strong> máximo <strong>1 hora</strong><br>
-               Recibirás tu PDF firmado por WhatsApp o correo.`
-            : `<strong>⏱️ Tiempo estimado: máximo <strong>5 minutos</strong></strong><br>
-               Recibirás el enlace de descarga por WhatsApp o correo.`
-          }
+                    border-radius:0 8px 8px 0;padding:12px;margin-bottom:16px;
+                    font-size:0.82rem;color:#0D47A1;line-height:1.6">
+          <strong>¿Qué sigue?</strong><br>
+          1. Te enviamos un PDF borrador para revisión<br>
+          2. Confirmas que los datos están correctos<br>
+          3. Coordinas el pago (desde S/ 180)<br>
+          4. Recibes el PDF firmado en 15 min ⚡
         </div>
 
-        <!-- Garantía -->
-        <div style="background:#FFF8E1;border:1px solid #F5C400;border-radius:8px;
-                    padding:10px;margin-bottom:16px;font-size:0.75rem;color:#7A6000">
-          ⚡ Entrega garantizada en el tiempo indicado o <strong>devolución del 100%</strong>
-        </div>
-
-        <!-- Botón contacto si no recibe -->
-        <div style="font-size:0.78rem;color:#5A6070;text-align:center;margin-bottom:12px">
-          ¿No recibiste tu ${esCertificado ? 'documento' : 'enlace de descarga'} en el tiempo indicado?
-        </div>
-        <a href="https://wa.me/${WA_NUMERO}?text=${msgWA}" target="_blank"
-           style="display:block;text-align:center;padding:10px;
-                  background:#25D366;border-radius:8px;color:white;
-                  text-decoration:none;font-weight:700;font-size:0.85rem;
-                  margin-bottom:12px">
-          💬 Escribir al WhatsApp: 925 030 742
-        </a>
-
-        <!-- Cerrar -->
         <button onclick="this.closest('div[style*=fixed]').remove()"
-          style="width:100%;padding:10px;background:#F5C400;border:none;
+          style="width:100%;padding:12px;background:#F5C400;border:none;
                  border-radius:8px;font-weight:700;font-size:0.9rem;
                  cursor:pointer;text-transform:uppercase;letter-spacing:0.5px">
           Entendido
         </button>
       </div>
-    </div>
-  `;
+    </div>`;
 
   document.body.appendChild(div);
 }
 
-
-
-// ── Generar HTML del XLS ──────────────────────────
+// ══════════════════════════════════════════════════
+// Generar HTML del XLS (se conserva igual)
+// ══════════════════════════════════════════════════
 function generarHTMLXLS(nombre, direccion, rubro, ahora, numSolicitud, stats, ft, cond) {
   const { esTrifasico, tension, factorFase, label } = ft;
 
@@ -466,14 +326,14 @@ function generarHTMLXLS(nombre, direccion, rubro, ahora, numSolicitud, stats, ft
   }
   recHTML += `<tr><td colspan="4" style="${R2}">Conductor alimentador (medidor a tablero)</td><td colspan="2" style="${R2};text-align:center">AWG: ${cond.awg}</td><td colspan="2" style="${RV};background-color:#FFFFFF">${cond.seccion}</td></tr>`;
 
-  const ENC   = 'background-color:#0D47A1;color:#FFFFFF;font-weight:bold;font-family:Arial;font-size:10pt;border:1px solid #CCCCCC;padding:4px 6px';
-  const GRIS  = 'background-color:#F4F5F7;font-family:Arial;font-size:10pt;border:1px solid #CCCCCC;padding:4px 6px';
-  const TOT   = 'background-color:#E3F2FD;color:#0D47A1;font-weight:bold;font-family:Arial;font-size:10pt;border:1px solid #CCCCCC;padding:4px 6px;text-align:right';
-  const CAJA  = 'background-color:#0D47A1;color:#F5C400;font-weight:bold;font-family:Arial;font-size:12pt;text-align:center;vertical-align:middle;border:2px solid #0D47A1;padding:10px';
-  const PIE   = 'background-color:#F4F5F7;color:#5A6070;font-style:italic;font-family:Arial;font-size:8pt;border:1px solid #CCCCCC;padding:4px 6px;text-align:center';
-  const LBL   = 'background-color:#F4F5F7;color:#5A6070;font-weight:bold;font-family:Arial;font-size:9pt;border:1px solid #CCCCCC;padding:4px 6px';
-  const VAL   = 'background-color:#FFFFFF;font-family:Arial;font-size:9pt;border:1px solid #CCCCCC;padding:4px 6px;text-align:right';
-  const VAL2  = 'background-color:#E3F2FD;font-family:Arial;font-size:9pt;border:1px solid #CCCCCC;padding:4px 6px;text-align:right';
+  const ENC  = 'background-color:#0D47A1;color:#FFFFFF;font-weight:bold;font-family:Arial;font-size:10pt;border:1px solid #CCCCCC;padding:4px 6px';
+  const GRIS = 'background-color:#F4F5F7;font-family:Arial;font-size:10pt;border:1px solid #CCCCCC;padding:4px 6px';
+  const TOT  = 'background-color:#E3F2FD;color:#0D47A1;font-weight:bold;font-family:Arial;font-size:10pt;border:1px solid #CCCCCC;padding:4px 6px;text-align:right';
+  const CAJA = 'background-color:#0D47A1;color:#F5C400;font-weight:bold;font-family:Arial;font-size:12pt;text-align:center;vertical-align:middle;border:2px solid #0D47A1;padding:10px';
+  const PIE  = 'background-color:#F4F5F7;color:#5A6070;font-style:italic;font-family:Arial;font-size:8pt;border:1px solid #CCCCCC;padding:4px 6px;text-align:center';
+  const LBL  = 'background-color:#F4F5F7;color:#5A6070;font-weight:bold;font-family:Arial;font-size:9pt;border:1px solid #CCCCCC;padding:4px 6px';
+  const VAL  = 'background-color:#FFFFFF;font-family:Arial;font-size:9pt;border:1px solid #CCCCCC;padding:4px 6px;text-align:right';
+  const VAL2 = 'background-color:#E3F2FD;font-family:Arial;font-size:9pt;border:1px solid #CCCCCC;padding:4px 6px;text-align:right';
 
   return `<html xmlns:x="urn:schemas-microsoft-com:office:excel">
 <head><meta charset="UTF-8"></head><body>
@@ -535,9 +395,9 @@ ${recHTML}
 // ── Subir XLS a Google Drive via Apps Script ───────
 async function subirXLSADrive(numSolicitud) {
   try {
-    const nombre    = pagoActual.nombre    || '—';
-    const direccion = pagoActual.direccion || '—';
-    const rubro     = pagoActual.rubro     || '—';
+    const nombre    = solicitudActual.nombre    || '—';
+    const direccion = solicitudActual.direccion || '—';
+    const rubro     = solicitudActual.rubro     || '—';
     const ahora     = new Date().toLocaleDateString('es-PE', { timeZone: 'America/Lima' });
     const tarifa    = parseFloat(document.getElementById('inputTarifa').value) || 0.70;
     const stats     = Calculos.calcularTodo(
@@ -546,24 +406,20 @@ async function subirXLSADrive(numSolicitud) {
     const ft   = obtenerFaseTension();
     const cond = obtenerConductor(stats.potenciaFinal);
 
-    // Generar HTML del XLS
     const html          = generarHTMLXLS(nombre, direccion, rubro, ahora, numSolicitud, stats, ft, cond);
     const base64        = btoa(unescape(encodeURIComponent(html)));
     const nombreArchivo = `XLS_${numSolicitud}_${rubro}.xls`;
 
-    // Solo subir a Drive — el registro en Sheets lo hace procesarPago
     await enviarADrive(nombreArchivo, base64);
     console.log(`XLS subido a Drive | N: ${numSolicitud}`);
-
   } catch(err) {
     console.error('Error subiendo XLS:', err);
   }
 }
 
-
 // ── Inicializar ────────────────────────────────────
 inyectarModalPago();
 
-// Conectar botones existentes
-document.getElementById('btnPDF').addEventListener('click',  () => abrirModalPago('certificado'));
-document.getElementById('btnXLSX').addEventListener('click', () => abrirModalPago('xlsx'));
+// Conectar botón Solicitar Cuadro Certificado
+document.getElementById('btnPDF').addEventListener('click', () => abrirModalPago('certificado'));
+// btnXLSX ya no existe — el botón Coordinar abre WhatsApp directo (manejado en index.html)
