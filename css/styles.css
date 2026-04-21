@@ -1200,3 +1200,273 @@ body {
   .modal-body { padding: 14px 14px 8px; gap: 12px; }
   .modal-footer { padding: 12px 14px; }
 }
+/* ═══════════════════════════════════════════════════
+   AÑADIR AL FINAL DE css/styles.css
+═══════════════════════════════════════════════════ */
+
+/* ── Botón instalar PWA ── */
+#btnInstalarPWA {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: #F5C400;
+  color: #111214;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(245,196,0,0.25);
+  transition: background 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+#btnInstalarPWA:hover  { background: #ffd000; transform: translateY(-1px); }
+#btnInstalarPWA:active { transform: translateY(0); }
+@media (max-width: 600px) {
+  #btnInstalarPWA {
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-top: 4px;
+  }
+}
+
+/* ── Sección de confianza ── */
+.confianza-panel {
+  background: #fff;
+  border-top: 3px solid #0D47A1;
+  padding: 24px 20px;
+  margin-top: 8px;
+}
+.confianza-ingeniero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.confianza-foto {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #0D47A1;
+  flex-shrink: 0;
+}
+.confianza-foto-placeholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid #0D47A1;
+  background: #E3F2FD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+.confianza-nombre {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1C1E22;
+}
+.confianza-cip {
+  font-size: 0.8rem;
+  color: #5A6070;
+  margin-top: 2px;
+}
+.confianza-cip a {
+  color: #0D47A1;
+  text-decoration: none;
+  font-weight: 600;
+}
+.confianza-badge {
+  display: inline-block;
+  background: #E3F2FD;
+  color: #0D47A1;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-top: 6px;
+  border: 1px solid #BBDEFB;
+}
+.resenas-titulo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1C1E22;
+  margin: 16px 0 10px;
+}
+.resenas-grid { display: flex; flex-direction: column; gap: 10px; }
+.resena-card {
+  background: #F4F5F7;
+  border-radius: 8px;
+  padding: 12px;
+  border-left: 3px solid #F5C400;
+}
+.resena-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.resena-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0D47A1;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.resena-meta { font-size: 0.75rem; color: #5A6070; }
+.resena-meta strong { color: #1C1E22; font-size: 0.8rem; }
+.resena-estrellas { color: #F5C400; font-size: 0.75rem; margin-left: auto; }
+.resena-texto {
+  font-size: 0.78rem;
+  color: #3A3F4B;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* ── Botón Ayuda desplegable ── */
+.ayuda-panel {
+  background: #F4F5F7;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.ayuda-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1C1E22;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ayuda-toggle:hover { background: #E8E9EB; }
+.ayuda-contenido { display: none; padding: 0 16px 16px; }
+.ayuda-contenido.visible { display: block; }
+.ayuda-pasos { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.ayuda-paso { display: flex; align-items: flex-start; gap: 10px; }
+.ayuda-paso-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #0D47A1;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.ayuda-paso-texto { font-size: 0.82rem; color: #3A3F4B; line-height: 1.5; }
+.ayuda-badge-entrega {
+  display: inline-block;
+  background: #0D47A1;
+  color: #F5C400;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-top: 12px;
+}
+
+/* ── Vista previa móvil — A4 estático con zoom ── */
+.vp-zoom-toolbar {
+  display: none; /* solo visible en móvil */
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: #1C1E22;
+  flex-shrink: 0;
+}
+.vp-zoom-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #F5C400;
+  color: #111;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.15s;
+}
+.vp-zoom-btn:hover { filter: brightness(1.1); }
+.vp-zoom-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #8A9BB0;
+  min-width: 40px;
+  text-align: center;
+}
+.vp-scroll-wrap {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+.vp-a4-sheet {
+  background: white;
+  width: 794px;         /* A4 a 96dpi */
+  flex-shrink: 0;
+  transform-origin: top center;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+  touch-action: pinch-zoom pan-x pan-y;
+}
+
+@media (max-width: 768px) {
+  /* Mostrar toolbar de zoom en móvil */
+  .vp-zoom-toolbar { display: flex; }
+
+  /* El body del modal pasa a ser solo el wrapper de scroll */
+  .modal-vp-body {
+    padding: 0;
+    background: #e0e0e0;
+    overflow: hidden; /* el scroll lo maneja vp-scroll-wrap */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* A4 se escala para entrar en pantalla por defecto */
+  .vp-a4-sheet {
+    /* escala inicial calculada por JS según ancho de pantalla */
+  }
+
+  /* Marca de agua fija sobre el sheet */
+  .modal-vp-body::before {
+    font-size: 3rem;
+    opacity: 0.08;
+  }
+}
