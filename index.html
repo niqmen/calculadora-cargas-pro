@@ -319,17 +319,20 @@
 
   <!-- MODAL VISTA PREVIA WEB -->
   <div class="modal-overlay modal-fullscreen" id="modalVistaPrevia">
-    <div class="modal modal-vp">
-      <div class="modal-header">
-        <span>Vista Previa — Cuadro de Cargas BORRADOR</span>
-        <div style="display:flex;gap:8px;align-items:center">
-          <!-- Botón descarga eliminado — solo pantalla, sin descarga -->
-          <button class="modal-cerrar" id="modalVPCerrar">Cerrar</button>
-        </div>
-      </div>
-      <div class="modal-vp-body" id="modalVPBody"></div>
+  <div class="modal modal-vp">
+    <div class="modal-header">
+      <span>Vista Previa — Cuadro de Cargas BORRADOR</span>
+      <button class="modal-cerrar" id="modalVPCerrar">Cerrar</button>
     </div>
+    <!-- Toolbar zoom — visible solo en móvil via CSS -->
+    <div class="vp-zoom-toolbar" id="vpZoomToolbar">
+      <button class="vp-zoom-btn" id="btnZoomMenos">−</button>
+      <span class="vp-zoom-label" id="vpZoomLabel">100%</span>
+      <button class="vp-zoom-btn" id="btnZoomMas">+</button>
+    </div>
+    <div class="modal-vp-body" id="modalVPBody"></div>
   </div>
+</div>
 
   <!-- MODAL CARGA MANUAL -->
   <div class="modal-overlay" id="modalOverlay">
