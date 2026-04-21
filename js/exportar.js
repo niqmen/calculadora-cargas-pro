@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   exportar.js — PDF borrador + XLSX
+   exportar.js — PDF borrador + Vista Previa
    Calculadora de Cuadro de Cargas Pro
    Ing. Niquel Mendoza M.
 ═══════════════════════════════════════════════════ */
@@ -78,41 +78,14 @@ function marcaDeAgua(doc) {
 }
 
 // ════════════════════════════════════════════════════
-// GENERAR PDF — llamado desde pagos.js con nombre y dirección
-// ════════════════════════════════════════════════════
-function generarPDF(nombre, direccion) {
-  nombre    = nombre    || 'Vista Previa';
-  direccion = direccion || '—';
-
-  const { jsPDF } = window.jspdf;
-  const doc    = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  const tarifa = parseFloat(document.getElementById('inputTarifa').value) || 0.70;
-  const stats  = Calculos.calcularTodo(
-    datosActuales.map((d, idx) => ({ ...d, cantidad: cantidades[idx] || 0 })), tarifa
-  );
-  const ft = obtenerFaseTension();
-
-  dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, true);
-  doc.addPage();
-  dibujarHoja2(doc);
-
-  const total = doc.internal.getNumberOfPages();
-  for (let p = 1; p <= total; p++) { doc.setPage(p); dibujarPie(doc, p, total); }
-
-  doc.save(`cuadro_cargas_${rubroSelect.value || 'general'}_BORRADOR.pdf`);
-}
-
-// ════════════════════════════════════════════════════
 // HOJA 1 — CUADRO DE CARGAS
 // ════════════════════════════════════════════════════
 function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
 
-  // Marca de agua PRIMERO (queda debajo del contenido)
   if (esBorrador) marcaDeAgua(doc);
 
-  // ── Encabezado azul alineado con márgenes ──────
   doc.setFillColor(...AZUL);
-  doc.rect(ML, 15, CW, 20, 'F'); // mismo ML, MR que el resto
+  doc.rect(ML, 15, CW, 20, 'F');
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(13);
@@ -128,7 +101,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
 
   let y = 40;
 
-  // ── Datos del cliente ──────────────────────────
   const ahora = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
   doc.setFillColor(...GRIS);
   doc.roundedRect(ML, y, CW, 22, 2, 2, 'F');
@@ -136,9 +108,8 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
   doc.setLineWidth(0.3);
   doc.roundedRect(ML, y, CW, 22, 2, 2, 'S');
 
-  const col2 = ML + CW * 0.55; // columna derecha
+  const col2 = ML + CW * 0.55;
 
-  // Izquierda
   doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(...TEXTO_SUAVE);
   doc.text('CLIENTE:',   ML + 4, y + 5.5);
   doc.text('DIRECCION:', ML + 4, y + 11.5);
@@ -149,7 +120,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
   doc.text(direccion, ML + 28, y + 11.5);
   doc.text(ahora,     ML + 20, y + 17.5);
 
-  // Derecha
   const rubroLabel = (rubroSelect.options[rubroSelect.selectedIndex]?.text || rubroSelect.value)
     .replace(/[^\w\s\-áéíóúÁÉÍÓÚñÑ]/gu, '').trim();
   doc.setFont('helvetica', 'bold'); doc.setTextColor(...TEXTO_SUAVE);
@@ -159,7 +129,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
 
   y += 27;
 
-  // ── Tabla de artefactos (sin título separado) ──
   const filas = [];
   let seq = 1, sumTotal = 0, sumDem = 0;
 
@@ -178,7 +147,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
     filas.push([seq++, capitalizar(d.zona || '—'), desc, pot.toFixed(3), cant, E.toFixed(3), (F * 100).toFixed(0) + '%', G.toFixed(3)]);
   });
 
-  // Fila de totales
   filas.push([
     { content: 'TOTALES', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold', fillColor: AZUL_CLARO, textColor: AZUL } },
     { content: Calculos.round2(sumTotal).toFixed(3), styles: { halign: 'right', fontStyle: 'bold', fillColor: AZUL_CLARO, textColor: AZUL } },
@@ -211,7 +179,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
   y = doc.lastAutoTable.finalY + 6;
   if (y > PH - 90) { doc.addPage(); if (esBorrador) marcaDeAgua(doc); y = 20; }
 
-  // ── Resumen de cálculo ─────────────────────────
   y = titSeccion(doc, 'RESUMEN DE CALCULO', y);
   y += 2;
 
@@ -232,7 +199,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
   const cajaW = CW - tablaResumenW - 6;
   const cajaY = y;
 
-  // Tabla resumen izquierda
   doc.autoTable({
     startY: y,
     body: resumenData,
@@ -248,14 +214,11 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
   });
 
   const tablaResumenH = doc.lastAutoTable.finalY - cajaY;
-
-  // Caja derecha — potencia mínima centrada verticalmente
   const cajaH = Math.max(tablaResumenH, 50);
   doc.setFillColor(...AZUL);
   doc.roundedRect(cajaX, cajaY, cajaW, cajaH, 2, 2, 'F');
 
-  // Centrar verticalmente el contenido de la caja
-  const contenidoH = 34; // altura aproximada del bloque de texto
+  const contenidoH = 34;
   const offsetV    = (cajaH - contenidoH) / 2;
   const cx         = cajaX + cajaW / 2;
 
@@ -273,7 +236,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
   doc.setTextColor(...BLANCO);
   doc.text('kW', cx, cajaY + offsetV + 28, { align: 'center' });
 
-  // Corriente y costo centrados en la caja
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
   doc.setTextColor(180, 210, 255);
@@ -284,7 +246,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
   y = Math.max(doc.lastAutoTable.finalY, cajaY + cajaH) + 6;
   if (y > PH - 60) { doc.addPage(); if (esBorrador) marcaDeAgua(doc); y = 20; }
 
-  // ── Recomendaciones técnicas ───────────────────
   y = titSeccion(doc, 'RECOMENDACIONES TECNICAS', y);
   y += 2;
 
@@ -321,7 +282,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
 
   y = doc.lastAutoTable.finalY + 3;
 
-  // Nota — solo en borrador
   if (esBorrador) {
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(6.5);
@@ -335,8 +295,6 @@ function dibujarHoja1(doc, nombre, direccion, stats, ft, tarifa, esBorrador) {
 // HOJA 2 — METODOLOGÍA
 // ════════════════════════════════════════════════════
 function dibujarHoja2(doc) {
-
-  // Encabezado azul alineado
   doc.setFillColor(...AZUL);
   doc.rect(ML, 15, CW, 20, 'F');
   doc.setFont('helvetica', 'bold');
@@ -351,14 +309,12 @@ function dibujarHoja2(doc) {
   y = titSeccion(doc, 'CAPITULO QUINTO — CALCULO DE LA POTENCIA CONTRATADA', y);
   y += 5;
 
-  // Art 19
   doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...AZUL);
   doc.text('Articulo 19.- Determinacion de la Potencia Contratada', ML, y);
   y += 5;
   const t19 = 'La potencia conectada del usuario es la potencia requerida por el mismo al momento de solicitar el suministro. Las potencias contratadas por el usuario a los efectos de la facturacion de la potencia activa, no podran ser mayores que la potencia conectada.';
   y = escribirParrafo(doc, t19, y);
 
-  // Art 20
   doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...AZUL);
   doc.text('Articulo 20.- Potencia Conectada en usuarios de Baja Tension (BT)', ML, y);
   y += 5;
@@ -369,7 +325,6 @@ function dibujarHoja2(doc) {
   ];
   parrafos20.forEach(p => { y = escribirParrafo(doc, p, y); });
 
-  // Tabla de simultaneidad
   doc.autoTable({
     startY: y,
     head: [['N de equipos conectados', 'Potencia Maxima estimada (% de carga)']],
@@ -404,7 +359,6 @@ function dibujarHoja2(doc) {
   y = escribirParrafo(doc, 'Alternativamente el usuario podra solicitar una potencia contratada menor a la potencia conectada determinada anteriormente, para lo cual la distribuidora podra exigir al usuario la instalacion de equipos limitadores de potencia, los cuales seran a cargo del usuario.', y);
   y += 4;
 
-  // Nota legal
   doc.setFillColor(...GRIS);
   doc.roundedRect(ML, y, CW, 16, 2, 2, 'F');
   doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(...AZUL);
@@ -438,18 +392,90 @@ function capitalizar(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-// Los botones btnPDF y btnXLSX son manejados por pagos.js
-
 // ── Vista Previa en web ────────────────────────────
 document.getElementById('btnPreview').addEventListener('click', mostrarVistaPrevia);
+
+// Cerrar modal VP — muestra banner invitación al cerrar
 document.getElementById('modalVPCerrar').addEventListener('click', () => {
   document.getElementById('modalVistaPrevia').classList.remove('visible');
+  mostrarBannerInvitacion();
 });
-document.getElementById('btnVPDescargar').addEventListener('click', descargarBorradorPDF);
+
+// Click fuera del modal — igual muestra banner
 document.getElementById('modalVistaPrevia').addEventListener('click', e => {
-  if (e.target === document.getElementById('modalVistaPrevia'))
+  if (e.target === document.getElementById('modalVistaPrevia')) {
     document.getElementById('modalVistaPrevia').classList.remove('visible');
+    mostrarBannerInvitacion();
+  }
 });
+
+// ── Banner invitación post-vista-previa ────────────
+function mostrarBannerInvitacion() {
+  // Evitar duplicados
+  if (document.getElementById('bannerInvitacion')) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'bannerInvitacion';
+  banner.style.cssText = `
+    position:fixed;bottom:0;left:0;right:0;z-index:8888;
+    background:#0D47A1;color:#fff;
+    padding:14px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;flex-wrap:wrap;
+    box-shadow:0 -4px 20px rgba(0,0,0,0.25);
+    font-family:'Barlow',Arial,sans-serif;
+    animation: slideUp 0.3s ease;
+  `;
+
+  banner.innerHTML = `
+    <style>
+      @keyframes slideUp {
+        from { transform: translateY(100%); opacity:0; }
+        to   { transform: translateY(0);    opacity:1; }
+      }
+    </style>
+    <span style="font-size:0.9rem;flex:1;min-width:200px">
+      ¿Necesitas el documento <strong>firmado y válido</strong> ante Pluz o Luz del Sur?
+    </span>
+    <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">
+      <button id="bannerBtnSolicitar"
+        style="background:#F5C400;color:#111;border:none;padding:9px 16px;
+               border-radius:6px;font-weight:700;cursor:pointer;font-size:0.85rem;
+               white-space:nowrap">
+        📋 Solicitar Cuadro Certificado
+      </button>
+      <button id="bannerBtnCoorinar"
+        style="background:#25D366;color:#fff;border:none;padding:9px 16px;
+               border-radius:6px;font-weight:700;cursor:pointer;font-size:0.85rem;
+               white-space:nowrap">
+        💬 Coordinar con el Ingeniero
+      </button>
+      <button id="bannerBtnCerrar"
+        style="background:transparent;color:#aac4f0;border:1px solid #aac4f0;
+               padding:9px 12px;border-radius:6px;cursor:pointer;font-size:0.85rem;
+               white-space:nowrap">
+        ✕
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+
+  document.getElementById('bannerBtnSolicitar').addEventListener('click', () => {
+    banner.remove();
+    document.getElementById('btnPDF').click();
+  });
+
+  document.getElementById('bannerBtnCoorinar').addEventListener('click', () => {
+    banner.remove();
+    document.getElementById('btnXLSX').click();
+  });
+
+  document.getElementById('bannerBtnCerrar').addEventListener('click', () => banner.remove());
+
+  // Auto-cierre después de 12 segundos
+  setTimeout(() => { if (document.getElementById('bannerInvitacion')) banner.remove(); }, 12000);
+}
 
 function mostrarVistaPrevia() {
   if (!datosActuales.some((_, idx) => (cantidades[idx] || 0) > 0)) {
@@ -465,7 +491,6 @@ function mostrarVistaPrevia() {
   const rubro   = (rubroSelect.options[rubroSelect.selectedIndex]?.text || rubroSelect.value)
                     .replace(/[^\w\s\-áéíóúÁÉÍÓÚñÑ]/gu, '').trim();
 
-  // Construir filas tabla
   let filasHTML = '', seq = 1, sumTot = 0, sumDem = 0;
   datosActuales.forEach((d, idx) => {
     const cant = cantidades[idx] || 0;
@@ -494,7 +519,6 @@ function mostrarVistaPrevia() {
     <td class="td-right">${Calculos.round2(sumDem).toFixed(3)}</td>
   </tr>`;
 
-  // Recomendaciones
   const { esTrifasico, tension, factorFase, label } = ft;
   const cond = obtenerConductor(stats.potenciaFinal);
   let recHTML = '';
@@ -563,20 +587,4 @@ function mostrarVistaPrevia() {
     </div>`;
 
   document.getElementById('modalVistaPrevia').classList.add('visible');
-}
-
-function descargarBorradorPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc    = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  const tarifa = parseFloat(document.getElementById('inputTarifa').value) || 0.70;
-  const stats  = Calculos.calcularTodo(
-    datosActuales.map((d, idx) => ({ ...d, cantidad: cantidades[idx] || 0 })), tarifa
-  );
-  const ft = obtenerFaseTension();
-  dibujarHoja1(doc, 'Vista Previa', '—', stats, ft, tarifa, true);
-  doc.addPage();
-  dibujarHoja2(doc);
-  const total = doc.internal.getNumberOfPages();
-  for (let p = 1; p <= total; p++) { doc.setPage(p); dibujarPie(doc, p, total); }
-  doc.save(`borrador_${rubroSelect.value || 'general'}.pdf`);
 }
