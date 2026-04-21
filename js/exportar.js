@@ -477,6 +477,10 @@ function mostrarBannerInvitacion() {
   setTimeout(() => { if (document.getElementById('bannerInvitacion')) banner.remove(); }, 12000);
 }
 
+// ── REEMPLAZAR la función mostrarVistaPrevia en exportar.js ──
+// Busca: "function mostrarVistaPrevia() {"
+// Reemplaza todo hasta el cierre de función con esto:
+
 function mostrarVistaPrevia() {
   if (!datosActuales.some((_, idx) => (cantidades[idx] || 0) > 0)) {
     alert('Selecciona al menos un artefacto para ver la vista previa.');
@@ -486,11 +490,12 @@ function mostrarVistaPrevia() {
   const stats  = Calculos.calcularTodo(
     datosActuales.map((d, idx) => ({ ...d, cantidad: cantidades[idx] || 0 })), tarifa
   );
-  const ft      = obtenerFaseTension();
-  const ahora   = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
-  const rubro   = (rubroSelect.options[rubroSelect.selectedIndex]?.text || rubroSelect.value)
-                    .replace(/[^\w\s\-áéíóúÁÉÍÓÚñÑ]/gu, '').trim();
+  const ft    = obtenerFaseTension();
+  const ahora = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
+  const rubro = (rubroSelect.options[rubroSelect.selectedIndex]?.text || rubroSelect.value)
+                  .replace(/[^\w\s\-áéíóúÁÉÍÓÚñÑ]/gu, '').trim();
 
+  // Construir filas tabla
   let filasHTML = '', seq = 1, sumTot = 0, sumDem = 0;
   datosActuales.forEach((d, idx) => {
     const cant = cantidades[idx] || 0;
@@ -519,6 +524,7 @@ function mostrarVistaPrevia() {
     <td class="td-right">${Calculos.round2(sumDem).toFixed(3)}</td>
   </tr>`;
 
+  // Recomendaciones
   const { esTrifasico, tension, factorFase, label } = ft;
   const cond = obtenerConductor(stats.potenciaFinal);
   let recHTML = '';
@@ -533,8 +539,9 @@ function mostrarVistaPrevia() {
   }
   recHTML += `<tr><td>Conductor alimentador (medidor a tablero)</td><td class="td-center">AWG: ${cond.awg}</td><td>${cond.seccion}</td></tr>`;
 
-  document.getElementById('modalVPBody').innerHTML = `
-    <div class="vp-documento">
+  // HTML del documento A4
+  const docHTML = `
+    <div class="vp-documento vp-a4-sheet" id="vpA4Sheet">
       <div class="vp-encabezado">
         <h2>Cuadro de Cargas Electricas</h2>
         <p>Vista previa BORRADOR — No valido como documento oficial sin firma del profesional responsable</p>
@@ -586,5 +593,49 @@ function mostrarVistaPrevia() {
       </p>
     </div>`;
 
+  // Inyectar en el modal
+  const body = document.getElementById('modalVPBody');
+  body.innerHTML = `<div class="vp-scroll-wrap" id="vpScrollWrap">${docHTML}</div>`;
+
+  // Inyectar toolbar de zoom (solo visible en móvil via CSS)
+  const toolbar = document.getElementById('vpZoomToolbar');
+  // Ya existe en el HTML — solo actualizamos el label
+  _vpZoom = _vpZoomInicial();
+  _aplicarZoom();
+
   document.getElementById('modalVistaPrevia').classList.add('visible');
+}
+
+// ── Zoom state ─────────────────────────────────────
+let _vpZoom = 1;
+const _VP_ZOOM_STEP = 0.15;
+const _VP_ZOOM_MIN  = 0.3;
+const _VP_ZOOM_MAX  = 2.0;
+
+function _vpZoomInicial() {
+  // En móvil: calcula escala para que el A4 (794px) quepa en la pantalla
+  if (window.innerWidth <= 768) {
+    const disponible = window.innerWidth - 32; // padding 16 x2
+    return Math.min(1, disponible / 794);
+  }
+  return 1;
+}
+
+function _aplicarZoom() {
+  const sheet = document.getElementById('vpA4Sheet');
+  const label = document.getElementById('vpZoomLabel');
+  if (sheet) sheet.style.transform = `scale(${_vpZoom})`;
+  if (label) label.textContent = Math.round(_vpZoom * 100) + '%';
+}
+
+// Conectar botones zoom (llamado desde index.html)
+function initVPZoom() {
+  document.getElementById('btnZoomMas').addEventListener('click', () => {
+    _vpZoom = Math.min(_VP_ZOOM_MAX, _vpZoom + _VP_ZOOM_STEP);
+    _aplicarZoom();
+  });
+  document.getElementById('btnZoomMenos').addEventListener('click', () => {
+    _vpZoom = Math.max(_VP_ZOOM_MIN, _vpZoom - _VP_ZOOM_STEP);
+    _aplicarZoom();
+  });
 }
