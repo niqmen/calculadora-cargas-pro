@@ -15,7 +15,7 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://niqmen.github.io/calculadora-cargas-pro/">
 
-  <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+  <!-- Open Graph -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://niqmen.github.io/calculadora-cargas-pro/">
   <meta property="og:title"       content="Calculadora de Cuadro de Cargas Pro — Enel y Luz del Sur Peru">
@@ -30,7 +30,7 @@
   <meta name="twitter:description" content="Calcula tu cuadro de cargas para Enel o Luz del Sur. Certificado por ingeniero electricista colegiado.">
   <meta name="twitter:image"       content="https://niqmen.github.io/calculadora-cargas-pro/img/icons/icon-512.png">
 
-  <!-- Datos estructurados (Google entiende qué es el sitio) -->
+  <!-- Datos estructurados -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -53,36 +53,28 @@
     "offers": [
       {
         "@type": "Offer",
-        "name": "Certificado PDF firmado",
-        "price": "50",
-        "priceCurrency": "PEN"
-      },
-      {
-        "@type": "Offer",
-        "name": "Descarga XLSX editable",
-        "price": "3",
+        "name": "Cuadro de Cargas Certificado PDF firmado",
+        "price": "180",
         "priceCurrency": "PEN"
       }
     ]
   }
   </script>
-  <!-- ══════════ -->
 
   <!-- ═══ PWA ═══ -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#F5C400">
   <meta name="mobile-web-app-capable" content="yes">
-  <!-- iOS Safari -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Cuadro Cargas">
   <link rel="apple-touch-icon" href="img/icons/icon-192.png">
-  <!-- ══════════ -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+
   <style>
     /* ── Botón instalar PWA ── */
     #btnInstalarPWA {
@@ -116,6 +108,203 @@
         margin-top: 4px;
       }
     }
+
+    /* ── Sección de confianza ── */
+    .confianza-panel {
+      background: #fff;
+      border-top: 3px solid #0D47A1;
+      padding: 24px 20px;
+      margin-top: 8px;
+    }
+    .confianza-ingeniero {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .confianza-foto {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #0D47A1;
+      flex-shrink: 0;
+      background: #E3F2FD;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      overflow: hidden;
+    }
+    .confianza-foto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .confianza-foto-placeholder {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid #0D47A1;
+      background: #E3F2FD;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .confianza-nombre {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1C1E22;
+    }
+    .confianza-cip {
+      font-size: 0.8rem;
+      color: #5A6070;
+      margin-top: 2px;
+    }
+    .confianza-cip a {
+      color: #0D47A1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .confianza-badge {
+      display: inline-block;
+      background: #E3F2FD;
+      color: #0D47A1;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-top: 6px;
+      border: 1px solid #BBDEFB;
+    }
+    .resenas-titulo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1C1E22;
+      margin: 16px 0 10px;
+    }
+    .resenas-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .resena-card {
+      background: #F4F5F7;
+      border-radius: 8px;
+      padding: 12px;
+      border-left: 3px solid #F5C400;
+    }
+    .resena-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .resena-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #0D47A1;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .resena-meta {
+      font-size: 0.75rem;
+      color: #5A6070;
+    }
+    .resena-meta strong {
+      color: #1C1E22;
+      font-size: 0.8rem;
+    }
+    .resena-estrellas {
+      color: #F5C400;
+      font-size: 0.75rem;
+      margin-left: auto;
+    }
+    .resena-texto {
+      font-size: 0.78rem;
+      color: #3A3F4B;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ── Botón Ayuda desplegable ── */
+    .ayuda-panel {
+      background: #F4F5F7;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .ayuda-toggle {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 12px 16px;
+      text-align: left;
+      cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1C1E22;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ayuda-toggle:hover { background: #E8E9EB; }
+    .ayuda-contenido {
+      display: none;
+      padding: 0 16px 16px;
+    }
+    .ayuda-contenido.visible { display: block; }
+    .ayuda-pasos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .ayuda-paso {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .ayuda-paso-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #0D47A1;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .ayuda-paso-texto {
+      font-size: 0.82rem;
+      color: #3A3F4B;
+      line-height: 1.5;
+    }
+    .ayuda-badge-entrega {
+      display: inline-block;
+      background: #0D47A1;
+      color: #F5C400;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-top: 12px;
+    }
   </style>
 </head>
 <body>
@@ -130,12 +319,9 @@
           <span class="header-sub">Calculadora de Demanda Máxima</span>
         </div>
       </div>
-      <!-- BOTÓN INSTALAR PWA — se muestra solo si el navegador lo soporta -->
-      <button id="btnInstalarPWA" style="display:none"
-        aria-label="Instalar aplicación">
+      <button id="btnInstalarPWA" style="display:none" aria-label="Instalar aplicación">
         Instalar App
       </button>
-
       <div class="header-selector">
         <label for="rubroSelect" class="selector-label"> Tipo de instalacion</label>
         <div class="select-wrapper">
@@ -240,11 +426,120 @@
         </div>
       </div>
 
+      <!-- BOTONES ACCIÓN -->
       <div class="botones-export">
         <button class="btn-reset" id="btnReset">Reiniciar</button>
-        <button class="btn-preview" id="btnPreview">Vista Previa</button>
-        <button class="btn-export-pdf" id="btnPDF">Certificar PDF — S/. 50</button>
-        <button class="btn-export-xlsx" id="btnXLSX">Descargar XLSX — S/. 3</button>
+        <button class="btn-preview" id="btnPreview">👁 Vista Previa</button>
+        <button class="btn-export-pdf" id="btnPDF">📋 Solicitar Cuadro Certificado</button>
+        <button class="btn-export-xlsx" id="btnXLSX">💬 Coordinar con el Ingeniero</button>
+      </div>
+
+      <!-- BOTÓN AYUDA -->
+      <div class="ayuda-panel">
+        <button class="ayuda-toggle" id="btnAyudaToggle">
+          <span>❓ ¿Cómo funciona?</span>
+          <span id="ayudaFlecha">▼</span>
+        </button>
+        <div class="ayuda-contenido" id="ayudaContenido">
+          <div class="ayuda-pasos">
+            <div class="ayuda-paso">
+              <div class="ayuda-paso-num">1</div>
+              <div class="ayuda-paso-texto">
+                <strong>Selecciona tus equipos</strong> — elige el rubro y marca los artefactos de tu local. La calculadora aplica la norma OSINERGMIN automáticamente.
+              </div>
+            </div>
+            <div class="ayuda-paso">
+              <div class="ayuda-paso-num">2</div>
+              <div class="ayuda-paso-texto">
+                <strong>Solicita el cuadro certificado</strong> — completa tu nombre, dirección y WhatsApp. El Ing. Niquel te envía un borrador para revisión.
+              </div>
+            </div>
+            <div class="ayuda-paso">
+              <div class="ayuda-paso-num">3</div>
+              <div class="ayuda-paso-texto">
+                <strong>Recibe el PDF firmado</strong> — confirmas que los datos están correctos, coordinas el pago y recibes el documento oficial firmado por el ingeniero CIP.
+              </div>
+            </div>
+          </div>
+          <!-- REEMPLAZAR href con link de YouTube cuando esté grabado -->
+          <!-- <a href="https://youtu.be/PENDIENTE" target="_blank"
+            style="display:inline-block;margin-top:12px;font-size:0.8rem;color:#0D47A1;font-weight:600">
+            ▶ Ver video explicativo (2 min)
+          </a> -->
+          <div class="ayuda-badge-entrega">⚡ Entrega en 15 min tras confirmación de pago</div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DE CONFIANZA -->
+      <div class="confianza-panel">
+
+        <!-- Foto + datos del ingeniero -->
+        <div class="confianza-ingeniero">
+          <!-- REEMPLAZAR por: <img src="img/foto_ingeniero.webp" alt="Ing. Niquel Mendoza" class="confianza-foto"> -->
+          <div class="confianza-foto-placeholder">👷</div>
+          <div>
+            <div class="confianza-nombre">Ing. Niquel Mendoza M.</div>
+            <div class="confianza-cip">
+              Electricista Colegiado —
+              <a href="https://www.cip.org.pe/publicaciones/verificacion-de-colegiatura" target="_blank" rel="noopener">
+                Verificar CIP ↗
+              </a>
+            </div>
+            <div class="confianza-badge">⚡ Cálculo basado en CNE · Metodología: Cargas Descriptivas</div>
+          </div>
+        </div>
+
+        <!-- Reseñas -->
+        <!-- ACTIVAR esta sección cuando tengas 3 reseñas reales -->
+        <!--
+        <div class="resenas-titulo">Lo que dicen nuestros clientes</div>
+        <div class="resenas-grid">
+
+          <div class="resena-card">
+            <div class="resena-header">
+              <div class="resena-avatar">M.R.</div>
+              <div class="resena-meta">
+                <strong>M. Ramos</strong><br>
+                Panadería · Ate
+              </div>
+              <div class="resena-estrellas">★★★★★</div>
+            </div>
+            <div class="resena-texto">
+              "Tramité con Luz del Sur sin problemas. El PDF llegó en menos de 20 minutos, firmado y con sello."
+            </div>
+          </div>
+
+          <div class="resena-card">
+            <div class="resena-header">
+              <div class="resena-avatar">J.V.</div>
+              <div class="resena-meta">
+                <strong>J. Villanueva</strong><br>
+                Restaurante · SJM
+              </div>
+              <div class="resena-estrellas">★★★★★</div>
+            </div>
+            <div class="resena-texto">
+              "El ingeniero me revisó los equipos antes de firmar. Muy profesional, todo rápido."
+            </div>
+          </div>
+
+          <div class="resena-card">
+            <div class="resena-header">
+              <div class="resena-avatar">C.L.</div>
+              <div class="resena-meta">
+                <strong>C. López</strong><br>
+                Minimarket · Breña
+              </div>
+              <div class="resena-estrellas">★★★★★</div>
+            </div>
+            <div class="resena-texto">
+              "Lo usé para mi trámite en Pluz. Aprobado a la primera. Recomendado 100%."
+            </div>
+          </div>
+
+        </div>
+        -->
+
       </div>
 
       <div class="resultados-footer">
@@ -260,7 +555,7 @@
       <div class="modal-header">
         <span>Vista Previa — Cuadro de Cargas BORRADOR</span>
         <div style="display:flex;gap:8px;align-items:center">
-          <button class="btn-vp-descargar" id="btnVPDescargar">Descargar PDF borrador</button>
+          <!-- Botón descarga eliminado — solo pantalla, sin descarga -->
           <button class="modal-cerrar" id="modalVPCerrar">Cerrar</button>
         </div>
       </div>
@@ -346,15 +641,31 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
   <!-- Módulos JS propios -->
-  <script src="js/calculos.js?v=9"></script>
-  <script src="js/app.js?v=9"></script>
-  <script src="js/exportar.js?v=9"></script>
-  <script src="js/modal.js?v=9"></script>
-  <script src="js/drive.js?v=9"></script>
-  <script src="js/pagos.js?v=9"></script>
+  <script src="js/calculos.js?v=10"></script>
+  <script src="js/app.js?v=10"></script>
+  <script src="js/exportar.js?v=10"></script>
+  <script src="js/modal.js?v=10"></script>
+  <script src="js/drive.js?v=10"></script>
+  <script src="js/pagos.js?v=10"></script>
 
-  <!-- ═══ PWA: registro del Service Worker ═══ -->
   <script>
+    // ── Botón Coordinar con el Ingeniero ──────────────
+    document.getElementById('btnXLSX').addEventListener('click', () => {
+      const msg = encodeURIComponent(
+        'Hola Ingeniero, me interesa coordinar directamente. ¿Podría indicarme las opciones disponibles?'
+      );
+      window.open(`https://wa.me/51925030742?text=${msg}`, '_blank');
+    });
+
+    // ── Botón Ayuda desplegable ───────────────────────
+    document.getElementById('btnAyudaToggle').addEventListener('click', () => {
+      const contenido = document.getElementById('ayudaContenido');
+      const flecha    = document.getElementById('ayudaFlecha');
+      const abierto   = contenido.classList.toggle('visible');
+      flecha.textContent = abierto ? '▲' : '▼';
+    });
+
+    // ── PWA: registro del Service Worker ─────────────
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/calculadora-cargas-pro/service-worker.js')
@@ -372,11 +683,9 @@
       });
     }
 
-    /* ── Botón instalar PWA ── */
     let _deferredPrompt = null;
     const _btnInstalar  = document.getElementById('btnInstalarPWA');
 
-    /* Capturar el evento antes de que el navegador lo descarte */
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
       _deferredPrompt = e;
@@ -387,13 +696,10 @@
       if (!_deferredPrompt) return;
       _deferredPrompt.prompt();
       const { outcome } = await _deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        _btnInstalar.style.display = 'none';
-      }
+      if (outcome === 'accepted') _btnInstalar.style.display = 'none';
       _deferredPrompt = null;
     });
 
-    /* Ocultar si ya está instalada */
     window.addEventListener('appinstalled', () => {
       _btnInstalar.style.display = 'none';
       _deferredPrompt = null;
@@ -424,7 +730,6 @@
       setTimeout(() => d.remove(), 12000);
     }
   </script>
-  <!-- ══════════════════════════════════════ -->
 
 </body>
 </html>
