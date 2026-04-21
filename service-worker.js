@@ -3,7 +3,7 @@
    Ing. Niquel Mendoza M. | niqmen.github.io/calculadora-cargas-pro
    ============================================================ */
 
-const CACHE_STATIC = 'cuadro-cargas-static-v2';
+const CACHE_STATIC = 'cuadro-cargas-static-v3';
 const CACHE_IMAGES = 'cuadro-cargas-images-v1';
 
 const BASE = '/calculadora-cargas-pro';
